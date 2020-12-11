@@ -7,7 +7,7 @@ import (
 
 func main() {
 	a := app.New()
-	w := a.NewWindow("Hello")
+	w := a.NewWindow("Hacash Offline PC Wallet")
 
 	hello := widget.NewLabel("Hello Fyne!")
 	w.SetContent(widget.NewVBox(
