@@ -7,6 +7,7 @@ import (
 	"fyne.io/fyne/widget"
 	"github.com/flopp/go-findfont"
 	"github.com/hacash/pcwallet/actions"
+	"github.com/hacash/pcwallet/widgets"
 	"net/url"
 	"os"
 	"strings"
@@ -37,9 +38,13 @@ func main() {
 		Height: 800,
 	})
 
-	objs := container.NewVBox(widget.NewLabel("欢迎使用 Hacash 离线安全钱包，\n本程序包含创建账户、生成 HAC、BTC 或 HACD 转账交易、开启关闭通道等与私钥安全相关的功能。\n无安全问题的查询余额、查询交易、提交签名后交易等等功能请使用在线钱包："))
+	objs := container.NewVBox()
 
-	objs.Add(widget.NewLabel("Welcome to use hacash offline security wallet. \nThis program includes creating account, generating HAC, BTC or HACD \ntransfer transaction, opening and closing channel and \nother functions related to private key security. \nFor the functions of no security issues, such as balance inquiry, \ntransaction inquiry and transaction after submitting signature, \nplease use online Wallet:"))
+	lb1 := widgets.NewTextWrapWordLabel("欢迎使用 Hacash 离线安全钱包，本程序包含创建账户、生成 HAC、BTC 或 HACD 转账交易、开启关闭通道等与私钥安全相关的功能。无安全问题的查询余额、查询交易、提交签名后交易等等功能请使用在线钱包：")
+	lb2 := widgets.NewTextWrapWordLabel("Welcome to use hacash offline security wallet. This program includes creating account, generating HAC, BTC or HACD transfer transaction, opening and closing channel and other functions related to private key security. For the functions of no security issues, such as balance inquiry, transaction inquiry and transaction after submitting signature, please use online Wallet:")
+	objs.Add(lb1)
+	objs.Add(lb2)
+
 	online_wallet_url, _ := url.Parse("https://wallet.hacash.org")
 	objs.Add(widget.NewHyperlink("https://wallet.hacash.org", online_wallet_url))
 
@@ -51,7 +56,8 @@ func main() {
 	donate_address_input.SetText(donate_address)
 	objs.Add(donate_address_input)
 
-	objs.Add(widget.NewLabel("If you need to test the transfer or donate the wallet to the developer, \nplease transfer to the following address:"))
+	lb3 := widgets.NewTextWrapWordLabel("If you need to test the transfer or donate the wallet to the developer, please transfer to the following address:")
+	objs.Add(lb3)
 	donate_url, _ := url.Parse("http://block.hacash.org/address/" + donate_address)
 	objs.Add(widget.NewHyperlink(donate_address, donate_url))
 
@@ -67,7 +73,7 @@ func main() {
 	// 创建 BTC 转账交易
 	actions.AddCanvasObjectCreateTransferBTC(objs)
 
-	objs.Add(widget.NewLabel("\n\n\n"))
+	objs.Add(widget.NewLabel("\n\n\n\n"))
 
 	// 页面翻动
 	scroll := container.NewVScroll(objs)

@@ -9,17 +9,19 @@ import (
 	"github.com/hacash/core/account"
 	"github.com/hacash/core/fields"
 	"github.com/hacash/core/transactions"
+	"github.com/hacash/pcwallet/widgets"
 	"strconv"
 	"time"
 )
 
 func AddCanvasObjectCreateTransferHAC(box *fyne.Container) {
 
-	box.Add(widget.NewLabel("\n"))
+	box.Add(widget.NewLabel("\n\n\n\n"))
 
 	page := container.NewVBox()
 
-	page.Add(widget.NewLabel("创建一笔HAC普通转账交易。注意：转账数量为实到数额，交易手续费将额外扣除；\n交易手续费建议不低于 0.0001 枚；交易时间戳为选填，不填则默认取用当前时间。\nCreates a normal HAC transaction. Note: the amount of transfer is \nactual receive amount, the transaction fee will be deducted additionally; \nit is suggested that the transaction fee should not be less than 0.0001 pieces; \nthe transaction timestamp is optional, the current time will be used by default."))
+	page.Add(widgets.NewTextWrapWordLabel("创建一笔HAC普通转账交易。注意：转账数量为实到数额，交易手续费将额外扣除；交易手续费建议不低于 0.0001 枚；交易时间戳为选填，不填则默认取用当前时间。"))
+	page.Add(widgets.NewTextWrapWordLabel("Creates a normal HAC transaction. Note: the amount of transfer is actual receive amount, the transaction fee will be deducted additionally; it is suggested that the transaction fee should not be less than 0.0001 pieces; the transaction timestamp is optional, the current time will be used by default."))
 
 	input1 := widget.NewEntry()
 	input1.PlaceHolder = "这里输入付款地址 / Payment address"
@@ -107,7 +109,7 @@ func AddCanvasObjectCreateTransferHAC(box *fyne.Container) {
 			return
 		}
 		txbodyshow.SetText("HAC 转账交易创建成功！ / HAC Transfer transaction created successfully!" +
-			"\n请复制下面 [交易体/txbody] 后面的内容去在线钱包提交交易 /\n Please copy the following [txbody] \nto submit transaction in online wallet:" +
+			"\n请复制下面 [交易体/txbody] 后面的内容去在线钱包提交交易 / Please copy the following [txbody] to submit transaction in online wallet:" +
 			"\n\n[交易哈希/txhash] " + tx.Hash().ToHex() +
 			"\n\n[交易体/txbody] " + hex.EncodeToString(txbody) +
 			"\n\n[时间戳/timestamp] " + strconv.FormatInt(usetime, 10))

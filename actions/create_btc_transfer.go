@@ -9,20 +9,23 @@ import (
 	"github.com/hacash/core/account"
 	"github.com/hacash/core/fields"
 	"github.com/hacash/core/transactions"
+	"github.com/hacash/pcwallet/widgets"
 	"strconv"
 	"time"
 )
 
 func AddCanvasObjectCreateTransferBTC(box *fyne.Container) {
 
-	box.Add(widget.NewLabel("\n"))
+	box.Add(widget.NewLabel("\n\n\n\n"))
 
 	page := container.NewVBox()
 
-	page.Add(widget.NewLabel("创建一笔 BTC 普通转账交易。注意：转账数量为实到数额，交易手续费将额外扣除 HAC；\n交易手续费建议不低于 0.0001 枚；交易时间戳为选填，不填则默认取用当前时间。\nCreates a normal BTC transaction. Note: the amount of transfer is \nactual receive amount, the transaction fee will be use HAC deducted additionally; \nit is suggested that the transaction fee should not be less than 0.0001 pieces; \nthe transaction timestamp is optional, the current time will be used by default.\n[比特币单位/BTC unit]: 1 BTC = 100000000 SAT_satoshi"))
+	page.Add(widgets.NewTextWrapWordLabel("创建一笔 BTC 普通转账交易。注意：转账数量为实到数额，交易手续费将额外扣除 HAC；交易手续费建议不低于 0.0001 枚；交易时间戳为选填，不填则默认取用当前时间。"))
+	page.Add(widgets.NewTextWrapWordLabel("Creates a normal BTC transaction. Note: the amount of transfer is actual receive amount, the transaction fee will be use HAC deducted additionally; it is suggested that the transaction fee should not be less than 0.0001 pieces; the transaction timestamp is optional, the current time will be used by default."))
+	page.Add(widgets.NewTextWrapWordLabel("[比特币单位/BTC unit]: 1 BTC = 100000000 SAT_satoshi"))
 
 	input1 := widget.NewEntry()
-	input1.PlaceHolder = "这里输入BTC付款地址 / BTCPayment address"
+	input1.PlaceHolder = "这里输入BTC付款地址 / BTC Payment address"
 
 	input2 := widget.NewEntry()
 	input2.PlaceHolder = "这里输入BTC接收地址 / BTC Receive address"

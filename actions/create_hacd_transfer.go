@@ -8,17 +8,19 @@ import (
 	"github.com/hacash/core/account"
 	"github.com/hacash/core/fields"
 	"github.com/hacash/core/transactions"
+	"github.com/hacash/pcwallet/widgets"
 	"strconv"
 	"time"
 )
 
 func AddCanvasObjectCreateTransferHACD(box *fyne.Container) {
 
-	box.Add(widget.NewLabel("\n"))
+	box.Add(widget.NewLabel("\n\n\n\n"))
 
 	page := container.NewVBox()
 
-	page.Add(widget.NewLabel("创建一笔 HACD 批量转账交易。注意：交易手续费将额外扣除HAC；\n交易手续费建议不低于 0.002 枚；交易时间戳为选填，不填则默认取用当前时间。\nCreates a multiple HACD transaction. Note: the transaction fee will be use HAC deducted additionally; \nit is suggested that the transaction fee should not be less than 0.002 pieces; \nthe transaction timestamp is optional, the current time will be used by default."))
+	page.Add(widgets.NewTextWrapWordLabel("创建一笔 HACD 批量转账交易。注意：交易手续费将额外扣除HAC；交易手续费建议不低于 0.002 枚；交易时间戳为选填，不填则默认取用当前时间。"))
+	page.Add(widgets.NewTextWrapWordLabel("Creates a multiple HACD transaction. Note: the transaction fee will be use HAC deducted additionally; it is suggested that the transaction fee should not be less than 0.002 pieces; the transaction timestamp is optional, the current time will be used by default."))
 
 	input1 := widget.NewEntry()
 	input1.PlaceHolder = "这里输入逗号隔开的钻石字面值列表 / HACD name list split by comma"
@@ -93,7 +95,7 @@ func AddCanvasObjectCreateTransferHACD(box *fyne.Container) {
 			return
 		}
 		txbodyshow.SetText("HACD 转账交易创建成功！ / HACD Transfer transaction created successfully!" +
-			"\n请复制下面 [交易体/txbody] 后面的内容去在线钱包提交交易 /\n Please copy the following [txbody] \nto submit transaction in online wallet:" +
+			"\n请复制下面 [交易体/txbody] 后面的内容去在线钱包提交交易 / Please copy the following [txbody] to submit transaction in online wallet:" +
 			"\n\n[交易哈希/txhash] " + tx.Hash().ToHex() +
 			"\n\n[交易体/txbody] " + hex.EncodeToString(txbody) +
 			"\n\n[时间戳/timestamp] " + strconv.FormatInt(usetime, 10))
