@@ -19,7 +19,7 @@ func AddCanvasObjectCreateTransferHAC(box *fyne.Container) {
 
 	page := container.NewVBox()
 
-	page.Add(widget.NewLabel("创建一笔HAC普通转账交易。注意：转账数量为实到数额，交易手续费将额外扣除；\n交易手续费建议不低于 0.0001 枚；交易时间戳为选填，不填则默认取用当前时间。\nCreates a normal HAC transaction. Note: the amount of transfer is \nactual receive amount, the transaction fee will be deducted additionally; \nit is suggested that the transaction fee should not be less than 0.001 pieces; \nthe transaction timestamp is optional, the current time will be used by default."))
+	page.Add(widget.NewLabel("创建一笔HAC普通转账交易。注意：转账数量为实到数额，交易手续费将额外扣除；\n交易手续费建议不低于 0.0001 枚；交易时间戳为选填，不填则默认取用当前时间。\nCreates a normal HAC transaction. Note: the amount of transfer is \nactual receive amount, the transaction fee will be deducted additionally; \nit is suggested that the transaction fee should not be less than 0.0001 pieces; \nthe transaction timestamp is optional, the current time will be used by default."))
 
 	input1 := widget.NewEntry()
 	input1.PlaceHolder = "这里输入付款地址 / Payment address"
@@ -43,7 +43,7 @@ func AddCanvasObjectCreateTransferHAC(box *fyne.Container) {
 	txbodyshow.MultiLine = true
 	txbodyshow.Wrapping = fyne.TextWrapBreak
 
-	button1 := widget.NewButton("确认创建交易 / Create Tx", func() {
+	button1 := widget.NewButton("确认创建 HAC 交易 / Create HAC Tx", func() {
 		if input1.Text == "" {
 			txbodyshow.SetText("请输入输入付款地址 / Please input Payment address")
 			return
@@ -106,11 +106,11 @@ func AddCanvasObjectCreateTransferHAC(box *fyne.Container) {
 			txbodyshow.SetText("交易创建失败 / Transaction creation failed")
 			return
 		}
-		txbodyshow.SetText("转账交易创建成功！ / ransfer transaction created successfully!" +
+		txbodyshow.SetText("HAC 转账交易创建成功！ / HAC Transfer transaction created successfully!" +
 			"\n请复制下面 [交易体/txbody] 后面的内容去在线钱包提交交易 /\n Please copy the following [txbody] \nto submit transaction in online wallet:" +
 			"\n\n[交易哈希/txhash] " + tx.Hash().ToHex() +
-			"\n\n[交易体/txbody] " + hex.EncodeToString(txbody))
-
+			"\n\n[交易体/txbody] " + hex.EncodeToString(txbody) +
+			"\n\n[时间戳/timestamp] " + strconv.FormatInt(usetime, 10))
 	})
 
 	page.Add(input1)
@@ -123,7 +123,7 @@ func AddCanvasObjectCreateTransferHAC(box *fyne.Container) {
 	page.Add(button1)
 	page.Add(txbodyshow)
 
-	card := widget.NewCard("创建HAC普通转账交易 / Create HAC simple transfer tx", "", page)
+	card := widget.NewCard("创建 HAC 普通转账交易 / Create HAC simple transfer tx", "", page)
 	box.Add(card)
 
 }

@@ -43,16 +43,29 @@ func main() {
 	online_wallet_url, _ := url.Parse("https://wallet.hacash.org")
 	objs.Add(widget.NewHyperlink("https://wallet.hacash.org", online_wallet_url))
 
-	objs.Add(widget.NewLabel("如果你需要测试转账或者捐赠本钱包的开发者，请向以下地址转账：\nIf you need to test the transfer or donate the wallet to the developer, \nplease transfer to the following address:"))
-	donate_url, _ := url.Parse("http://block.hacash.org/address/1K7vNCyurJXEPzFnauJE1t2S5tDdjkAaZY")
-	objs.Add(widget.NewHyperlink("1K7vNCyurJXEPzFnauJE1t2S5tDdjkAaZY", donate_url))
+	donate_address := "1K7vNCyurJXEPzFnauJE1t2S5tDdjkAaZY"
+	objs.Add(widget.NewLabel("如果你需要测试转账或者捐赠本钱包的开发者，请向以下地址转账："))
+
+	donate_address_input := widget.NewEntry()
+	donate_address_input.Disable()
+	donate_address_input.SetText(donate_address)
+	objs.Add(donate_address_input)
+
+	objs.Add(widget.NewLabel("If you need to test the transfer or donate the wallet to the developer, \nplease transfer to the following address:"))
+	donate_url, _ := url.Parse("http://block.hacash.org/address/" + donate_address)
+	objs.Add(widget.NewHyperlink(donate_address, donate_url))
 
 	// 创建账户
 	actions.AddCanvasObjectCreateAccount(objs)
 
 	// 创建 HAC 普通转账交易
 	actions.AddCanvasObjectCreateTransferHAC(objs)
-	// 创建 BTC 普通转账交易
+
+	// 创建 HACD 转账交易
+	actions.AddCanvasObjectCreateTransferHACD(objs)
+
+	// 创建 BTC 转账交易
+	actions.AddCanvasObjectCreateTransferBTC(objs)
 
 	objs.Add(widget.NewLabel("\n\n\n"))
 
