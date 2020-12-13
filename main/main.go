@@ -34,7 +34,7 @@ func main() {
 	w := a.NewWindow("Hacash Offline PC Wallet / Hacash 离线电脑钱包")
 
 	w.Resize(fyne.Size{
-		Width:  1000,
+		Width:  1200,
 		Height: 800,
 	})
 

@@ -7,6 +7,6 @@ import (
 
 func NewTextWrapWordLabel(text string) *widget.Label {
 	lb := widget.NewLabel(text)
-	lb.Wrapping = fyne.TextWrapWord
+	lb.Wrapping = fyne.TextWrapBreak
 	return lb
 }
