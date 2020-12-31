@@ -25,6 +25,7 @@ func AddCanvasObjectCreateTransferHACD(box *fyne.Container) {
 	input1 := widget.NewEntry()
 	input1.PlaceHolder = "这里输入逗号隔开的钻石字面值列表 / HACD name list split by comma"
 	input1.Wrapping = fyne.TextWrapWord
+	input1.MultiLine = true
 
 	input2 := widget.NewEntry()
 	input2.PlaceHolder = "这里输入钻石接收地址 / HACD Receive address"
@@ -58,7 +59,7 @@ func AddCanvasObjectCreateTransferHACD(box *fyne.Container) {
 		}
 		payacc := account.GetAccountByPrivateKeyOrPassword(input3.Text)
 		feeacc := account.GetAccountByPrivateKeyOrPassword(input4.Text)
-		fee, e4 := fields.NewAmountFromMeiString(input5.Text)
+		fee, e4 := fields.NewAmountFromString(input5.Text)
 		if e4 != nil {
 			txbodyshow.SetText("交易手续费格式错误 / Tx Fee format error")
 			return

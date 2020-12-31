@@ -76,7 +76,7 @@ func AddCanvasObjectCreateTransferBTC(box *fyne.Container) {
 			return
 		}
 		feeacc := account.GetAccountByPrivateKeyOrPassword(input5.Text)
-		fee, e4 := fields.NewAmountFromMeiString(input6.Text)
+		fee, e4 := fields.NewAmountFromString(input6.Text)
 		if e4 != nil {
 			txbodyshow.SetText("交易手续费格式错误 / Tx Fee format error")
 			return

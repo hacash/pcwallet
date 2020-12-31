@@ -30,7 +30,7 @@ func AddCanvasObjectCreateTransferHAC(box *fyne.Container) {
 	input2.PlaceHolder = "这里输入接收地址 / Receive address"
 
 	input3 := widget.NewEntry()
-	input3.PlaceHolder = "这里输入转账数量（单位：枚 - :248） / Transfer quantity (unit: 248)"
+	input3.PlaceHolder = "这里输入转账数量（单位：枚 - :248） / Transfer quantity (unit: 248) / Example: 0.25 or ㄜ25:246"
 
 	input4 := widget.NewEntry()
 	input4.PlaceHolder = "这里输入交易手续费（单位：枚 - :248） / Tx Fee (unit: 248)"
@@ -60,7 +60,7 @@ func AddCanvasObjectCreateTransferHAC(box *fyne.Container) {
 			txbodyshow.SetText("接收地址格式错误 / Receive address format error")
 			return
 		}
-		amount, e3 := fields.NewAmountFromMeiString(input3.Text)
+		amount, e3 := fields.NewAmountFromString(input3.Text)
 		if e3 != nil {
 			txbodyshow.SetText("转账数量格式错误 / Transfer quantity format error")
 			return
@@ -69,7 +69,7 @@ func AddCanvasObjectCreateTransferHAC(box *fyne.Container) {
 			txbodyshow.SetText("转账数量位数过长 / Transfer quantity digits too long")
 			return
 		}
-		fee, e4 := fields.NewAmountFromMeiString(input4.Text)
+		fee, e4 := fields.NewAmountFromString(input4.Text)
 		if e4 != nil {
 			txbodyshow.SetText("交易手续费格式错误 / Tx Fee format error")
 			return
