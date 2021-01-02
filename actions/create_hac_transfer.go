@@ -14,80 +14,67 @@ import (
 	"time"
 )
 
-func AddCanvasObjectCreateTransferHAC(box *fyne.Container) {
+func AddCanvasObjectCreateTransferHAC(box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
 
-	box.Add(widget.NewLabel("\n\n\n\n"))
+	box.Add(widget.NewLabel("\n\n"))
 
 	page := container.NewVBox()
 
-	page.Add(widgets.NewTextWrapWordLabel("创建一笔HAC普通转账交易。注意：转账数量为实到数额，交易手续费将额外扣除；交易手续费建议不低于 0.0001 枚；交易时间戳为选填，不填则默认取用当前时间。"))
-	page.Add(widgets.NewTextWrapWordLabel("Creates a normal HAC transaction. Note: the amount of transfer is actual receive amount, the transaction fee will be deducted additionally; it is suggested that the transaction fee should not be less than 0.0001 pieces; the transaction timestamp is optional, the current time will be used by default."))
+	page.Add(langChangeManager.NewTextWrapWordLabel(map[string]string{"en": "Creates a normal HAC transaction. Note: the amount of transfer is actual receive amount, the transaction fee will be deducted additionally; it is suggested that the transaction fee should not be less than 0.0001 pieces; the transaction timestamp is optional, the current time will be used by default.", "zh": "创建一笔HAC普通转账交易。注意：转账数量为实到数额，交易手续费将额外扣除；交易手续费建议不低于 0.0001 枚；交易时间戳为选填，不填则默认取用当前时间。"}))
 
-	input1 := widget.NewEntry()
-	input1.PlaceHolder = "这里输入付款地址 / Payment address"
-
-	input2 := widget.NewEntry()
-	input2.PlaceHolder = "这里输入接收地址 / Receive address"
-
-	input3 := widget.NewEntry()
-	input3.PlaceHolder = "这里输入转账数量（单位：枚 - :248） / Transfer quantity (unit: 248) / Example: 0.25 or ㄜ25:246"
-
-	input4 := widget.NewEntry()
-	input4.PlaceHolder = "这里输入交易手续费（单位：枚 - :248） / Tx Fee (unit: 248)"
-
-	input5 := widget.NewEntry()
-	input5.PlaceHolder = "这里输入私钥或密码 / PrivateKey or Password"
-
-	input6 := widget.NewEntry()
-	input6.PlaceHolder = "选填：交易时间戳 / Optional: Tx timestamp"
-
+	input1 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Payment address", "zh": "输入付款地址"})
+	input2 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Receive address", "zh": "输入接收地址"})
+	input3 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Transfer quantity (unit: 248) or use 'ㄜ1:248' format, Example: '12.25' or 'ㄜ1225:246'", "zh": "输入转账数量 - HAC（单位：枚 - :248）也可直接使用 ㄜ1:248 格式， 例如：'12.25' or 'ㄜ1225:246'"})
+	input4 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Tx Fee - HAC (unit: 248) or use 'ㄜ1:248' format, Example: '0.25' or 'ㄜ25:246'", "zh": "输入交易手续费 - HAC（单位：枚 - :248）也可直接使用 'ㄜ1:248' 格式， 例如：'0.25' or 'ㄜ25:246'"})
+	input5 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "PrivateKey or Password", "zh": "输入私钥或密码"})
+	input6 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Optional: Tx timestamp", "zh": "选填：交易时间戳"})
 	txbodyshow := widget.NewEntry()
 	txbodyshow.MultiLine = true
 	txbodyshow.Wrapping = fyne.TextWrapBreak
 
-	button1 := widget.NewButton("确认创建 HAC 交易 / Create HAC Tx", func() {
+	button1 := langChangeManager.NewButton(map[string]string{"en": "Create HAC transfer Tx", "zh": "确认创建 HAC 转账交易"}, func() {
 		if input1.Text == "" {
-			txbodyshow.SetText("请输入输入付款地址 / Please input Payment address")
+			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Please input Payment address", "zh": "请输入付款地址"})
 			return
 		}
 		addr1, e1 := fields.CheckReadableAddress(input1.Text)
 		if e1 != nil {
-			txbodyshow.SetText("付款地址格式错误 / Payment address format error")
+			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Payment address format error", "zh": "付款地址格式错误"})
 			return
 		}
 		addr2, e2 := fields.CheckReadableAddress(input2.Text)
 		if e2 != nil {
-			txbodyshow.SetText("接收地址格式错误 / Receive address format error")
+			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Receive address format error", "zh": "接收地址格式错误"})
 			return
 		}
 		amount, e3 := fields.NewAmountFromString(input3.Text)
 		if e3 != nil {
-			txbodyshow.SetText("转账数量格式错误 / Transfer quantity format error")
+			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Transfer quantity format error", "zh": "转账数量格式错误"})
 			return
 		}
 		if len(amount.Numeral) > 6 {
-			txbodyshow.SetText("转账数量位数过长 / Transfer quantity digits too long")
+			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Transfer quantity digits too long", "zh": "转账数量位数过长"})
 			return
 		}
 		fee, e4 := fields.NewAmountFromString(input4.Text)
 		if e4 != nil {
-			txbodyshow.SetText("交易手续费格式错误 / Tx Fee format error")
+			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Tx Fee format error", "zh": "交易手续费格式错误"})
 			return
 		}
 		if len(fee.Numeral) > 2 {
-			txbodyshow.SetText("手续费位数过长 / Tx Fee  digits too long")
+			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Tx Fee digits too long", "zh": "手续费位数过长"})
 			return
 		}
 		payacc := account.GetAccountByPrivateKeyOrPassword(input5.Text)
 		if bytes.Compare(payacc.Address, *addr1) != 0 {
-			txbodyshow.SetText("私钥或密码不匹配付款地址 /\n The private key or password does not \nmatch the payment address")
+			langChangeManager.SetText(txbodyshow, map[string]string{"en": "The private key or password does not \nmatch the payment address", "zh": "私钥或密码不匹配付款地址"})
 			return
 		}
 		usetime := time.Now().Unix()
 		if len(input6.Text) > 0 {
 			its, e1 := strconv.ParseInt(input6.Text, 10, 0)
 			if e1 != nil {
-				txbodyshow.SetText("时间戳格式错误 / Timestamp format error")
+				langChangeManager.SetText(txbodyshow, map[string]string{"en": "Timestamp format error", "zh": "时间戳格式错误"})
 				return
 			}
 			usetime = its
@@ -98,21 +85,29 @@ func AddCanvasObjectCreateTransferHAC(box *fyne.Container) {
 			payacc, *addr2, amount, fee, usetime)
 
 		if tx == nil {
-			txbodyshow.SetText("交易创建失败 / Transaction creation failed")
+			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Transaction creation failed", "zh": "交易创建失败"})
 			return
 		}
 
 		// 创建成功
 		txbody, e3 := tx.Serialize()
 		if e3 != nil {
-			txbodyshow.SetText("交易创建失败 / Transaction creation failed")
+			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Transaction creation failed", "zh": "交易创建失败"})
 			return
 		}
-		txbodyshow.SetText("HAC 转账交易创建成功！ / HAC Transfer transaction created successfully!" +
-			"\n请复制下面 [交易体/txbody] 后面的内容去在线钱包提交交易 / Please copy the following [txbody] to submit transaction in online wallet:" +
+
+		resEn := "HAC Transfer transaction created successfully!" +
+			"\nPlease copy the following [txbody] to submit transaction in online wallet:" +
+			"\n\n[txhash] " + tx.Hash().ToHex() +
+			"\n\n[txbody] " + hex.EncodeToString(txbody) +
+			"\n\n[timestamp] " + strconv.FormatInt(usetime, 10)
+		resZh := "HAC 转账交易创建成功！" +
+			"\n请复制下面 [交易体/txbody] 后面的内容去在线钱包提交交易:" +
 			"\n\n[交易哈希/txhash] " + tx.Hash().ToHex() +
 			"\n\n[交易体/txbody] " + hex.EncodeToString(txbody) +
-			"\n\n[时间戳/timestamp] " + strconv.FormatInt(usetime, 10))
+			"\n\n[时间戳/timestamp] " + strconv.FormatInt(usetime, 10)
+
+		langChangeManager.SetText(txbodyshow, map[string]string{"en": resEn, "zh": resZh})
 	})
 
 	page.Add(input1)
@@ -125,7 +120,7 @@ func AddCanvasObjectCreateTransferHAC(box *fyne.Container) {
 	page.Add(button1)
 	page.Add(txbodyshow)
 
-	card := widget.NewCard("创建 HAC 普通转账交易 / Create HAC simple transfer tx", "", page)
+	card := langChangeManager.NewCardSetTitle(map[string]string{"en": "Create HAC simple transfer tx", "zh": "创建 HAC 普通转账交易"}, page)
 	box.Add(card)
 
 }
