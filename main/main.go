@@ -61,7 +61,7 @@ func main() {
 	online_wallet_url, _ := url.Parse("https://wallet.hacash.org")
 	objs.Add(widget.NewHyperlink("https://wallet.hacash.org", online_wallet_url))
 
-	donate_address := "1K7vNCyurJXEPzFnauJE1t2S5tDdjkAaZY"
+	donate_address := "1QDc1twwVy3acuftAv3GuNnKwxopYi9VLb"
 
 	donate_address_input := widget.NewEntry()
 	donate_address_input.Disable()
