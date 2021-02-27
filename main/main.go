@@ -70,7 +70,7 @@ func main() {
 
 	lb3 := langChangeManager.NewTextWrapWordLabel(map[string]string{"en": "If you need to test the transfer or donate the wallet to the developer, please transfer to the following address:", "zh": "如果你需要测试转账或者捐赠本钱包的开发者，请向以下地址转账："})
 	objs.Add(lb3)
-	donate_url, _ := url.Parse("http://block.hacash.org/address/" + donate_address)
+	donate_url, _ := url.Parse("https://explorer.hacash.org/address/" + donate_address)
 	objs.Add(widget.NewHyperlink(donate_address, donate_url))
 
 	// 创建账户
