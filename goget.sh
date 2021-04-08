@@ -1,2 +1,2 @@
-go get fyne.io/fyne
-go get github.com/flopp/go-findfont
+go get -u fyne.io/fyne
+go get -u github.com/flopp/go-findfont
