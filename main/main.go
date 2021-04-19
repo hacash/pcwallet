@@ -13,6 +13,13 @@ import (
 	"strings"
 )
 
+/*
+
+go build -o test/pcwallet pcwallet/main/main.go  && ./test/pcwallet
+
+
+*/
+
 func init() {
 
 	// 中文字体支持
@@ -72,6 +79,9 @@ func main() {
 	objs.Add(lb3)
 	donate_url, _ := url.Parse("https://explorer.hacash.org/address/" + donate_address)
 	objs.Add(widget.NewHyperlink(donate_address, donate_url))
+
+	// 检查一笔交易的结构和内容
+	actions.AddCanvasObjectCheckTxContent(objs, langChangeManager)
 
 	// 创建账户
 	actions.AddCanvasObjectCreateAccount(objs, langChangeManager)
