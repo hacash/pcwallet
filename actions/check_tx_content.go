@@ -91,34 +91,8 @@ func renderTxContent(txbodystr string) map[string]string {
 	end1 := "\n\n]\n"
 	en += end1
 	zh += end1
-	// 签名
-	notsignedaddrnum := 0
-	reqaddrs, _ := trs.RequestSignAddresses(nil, false)
-	en += fmt.Sprintf("\nSignature accounts required (%d): {\n", len(reqaddrs))
-	zh += fmt.Sprintf("\n交易签名检查 (%d): {\n", len(reqaddrs))
-	for i, rqa := range reqaddrs {
-		en_stat := "OK: completed the signature"
-		zh_stat := "OK: 已完成签名"
-		if ok, e1 := trs.VerifyTargetSign(rqa); !ok || e1 != nil {
-			en_stat = "fail: not signed"
-			zh_stat = "验证失败：未签名"
-			notsignedaddrnum += 1
-		}
-		en += fmt.Sprintf("\n%d). %s <%s>", i+1, rqa.ToReadable(), en_stat)
-		zh += fmt.Sprintf("\n%d). %s <%s>", i+1, rqa.ToReadable(), zh_stat)
-	}
-	end2 := "\n\n}\n"
-	en += end2
-	zh += end2
-
-	if notsignedaddrnum == 0 {
-		en += "\nSigned successfully: all signatures have been completed.\n"
-		zh += "\n签名验证成功: 已全部完成签名。\n"
-	} else {
-		en += fmt.Sprintf("\nSignature verification failed: %d accounts not signed.\n", notsignedaddrnum)
-		zh += fmt.Sprintf("\n签名验证失败: %d 个账户未签名。\n", notsignedaddrnum)
-	}
-
+	// 签名检查
+	checkTxSignStatus(trs, &en, &zh)
 	// ret ok
 	contents["en"] = en
 	contents["zh"] = zh
