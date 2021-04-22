@@ -23,12 +23,10 @@ func AddCanvasObjectCreateTxCloseChannel(box *fyne.Container, langChangeManager 
 	page.Add(langChangeManager.NewTextWrapWordLabel(map[string]string{"en": "", "zh": ""}))
 
 	input1 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Channel id", "zh": "通道ID"})
-	input2 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Left address", "zh": "左侧账户地址"})
-	input3 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Right address", "zh": "右侧账户地址"})
-	input4 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Fee address", "zh": "手续费支付地址"})
-	input5 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Fee amount", "zh": "手续费支付数额"})
-	input5.SetText("ㄜ1:244") // 默认手续费
-	input6 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Optional: Tx timestamp", "zh": "选填：交易时间戳"})
+	input2 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Fee address", "zh": "手续费支付地址"})
+	input3 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Fee amount", "zh": "手续费支付数额"})
+	input3.SetText("ㄜ1:244") // 默认手续费
+	input4 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Optional: Tx timestamp", "zh": "选填：交易时间戳"})
 
 	txbodyshow := widget.NewEntry()
 	txbodyshow.MultiLine = true
@@ -36,7 +34,7 @@ func AddCanvasObjectCreateTxCloseChannel(box *fyne.Container, langChangeManager 
 
 	button1 := langChangeManager.NewButton(map[string]string{"en": "Create close channel Tx", "zh": "确认创建关闭通道的交易"}, func() {
 
-		if input1.Text == "" || input2.Text == "" || input3.Text == "" || input4.Text == "" || input5.Text == "" {
+		if input1.Text == "" || input2.Text == "" || input3.Text == "" {
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Please finish fields", "zh": "请完善输入内容"})
 			return
 		}
@@ -50,24 +48,12 @@ func AddCanvasObjectCreateTxCloseChannel(box *fyne.Container, langChangeManager 
 		}
 		channelId = idbts
 		// 手续费地址和数额
-		left_addr, e5 := fields.CheckReadableAddress(strings.Trim(input2.Text, "\n "))
+		fee_addr, e5 := fields.CheckReadableAddress(strings.Trim(input2.Text, "\n "))
 		if e5 != nil {
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Fee address format error", "zh": "手续费地址格式错误"})
 			return
 		}
-		// 手续费地址和数额
-		right_addr, e5 := fields.CheckReadableAddress(strings.Trim(input3.Text, "\n "))
-		if e5 != nil {
-			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Fee address format error", "zh": "手续费地址格式错误"})
-			return
-		}
-		// 手续费地址和数额
-		fee_addr, e5 := fields.CheckReadableAddress(strings.Trim(input4.Text, "\n "))
-		if e5 != nil {
-			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Fee address format error", "zh": "手续费地址格式错误"})
-			return
-		}
-		fee_amt, e6 := fields.NewAmountFromString(strings.Trim(input5.Text, "\n "))
+		fee_amt, e6 := fields.NewAmountFromString(strings.Trim(input3.Text, "\n "))
 		if e6 != nil {
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Fee amount format error", "zh": "手续费数额格式错误"})
 			return
@@ -76,7 +62,7 @@ func AddCanvasObjectCreateTxCloseChannel(box *fyne.Container, langChangeManager 
 		// 交易时间
 		usetime := time.Now().Unix()
 		if len(input4.Text) > 0 {
-			its, e1 := strconv.ParseInt((strings.Trim(input6.Text, "\n ")), 10, 0)
+			its, e1 := strconv.ParseInt((strings.Trim(input4.Text, "\n ")), 10, 0)
 			if e1 != nil {
 				langChangeManager.SetText(txbodyshow, map[string]string{"en": "Timestamp format error", "zh": "时间戳格式错误"})
 				return
@@ -92,10 +78,8 @@ func AddCanvasObjectCreateTxCloseChannel(box *fyne.Container, langChangeManager 
 		}
 
 		// action
-		opcAct := actions.Action_12_ClosePaymentChannelByAddress{
-			ChannelId:    channelId,
-			LeftAddress:  *left_addr,
-			RightAddress: *right_addr,
+		opcAct := actions.Action_3_ClosePaymentChannel{
+			ChannelId: channelId,
 		}
 
 		// 添加 action
@@ -126,8 +110,6 @@ func AddCanvasObjectCreateTxCloseChannel(box *fyne.Container, langChangeManager 
 	page.Add(input2)
 	page.Add(input3)
 	page.Add(input4)
-	page.Add(input5)
-	page.Add(input6)
 
 	page.Add(button1)
 	page.Add(txbodyshow)
