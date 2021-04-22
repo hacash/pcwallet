@@ -80,6 +80,10 @@ func main() {
 	donate_url, _ := url.Parse("https://explorer.hacash.org/address/" + donate_address)
 	objs.Add(widget.NewHyperlink(donate_address, donate_url))
 
+	// 创建开启通道交易
+	actions.AddCanvasObjectCreateTxOpenChannel(objs, langChangeManager)
+	actions.AddCanvasObjectCreateTxCloseChannel(objs, langChangeManager)
+
 	// 签署交易
 	actions.AddCanvasObjectSignTx(objs, langChangeManager)
 

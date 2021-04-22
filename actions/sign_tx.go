@@ -80,7 +80,7 @@ func AddCanvasObjectSignTx(box *fyne.Container, langChangeManager *widgets.LangC
 			}
 			newsigns := make([]fields.Sign, 0)
 			for _, v := range trs.GetSigns() {
-				addr := account.NewAddressFromPublicKey([]byte{0}, v.PublicKey)
+				addr := account.NewAddressFromPublicKeyV0(v.PublicKey)
 				if _, hav := reqaddrmaps[string(addr)]; hav {
 					newsigns = append(newsigns, v)
 				}
@@ -183,7 +183,8 @@ func checkTxSignStatus(trs interfaces.Transaction, en *string, zh *string) {
 		reqaddrmaps[string(rqa)] = true // 标记
 		en_stat := "OK: completed the signature"
 		zh_stat := "OK: 已完成签名"
-		if ok, e1 := trs.VerifyTargetSign(rqa); !ok || e1 != nil {
+		rqas := []fields.Address{rqa}
+		if ok, e1 := trs.VerifyTargetSigns(rqas); !ok || e1 != nil {
 			en_stat = "fail: not signed"
 			zh_stat = "验证失败：未签名"
 			notsignedaddrnum += 1
@@ -199,7 +200,7 @@ func checkTxSignStatus(trs interfaces.Transaction, en *string, zh *string) {
 	allsigns := trs.GetSigns()
 	forceAppendSignAddrs := []fields.Address{}
 	for _, v := range allsigns {
-		addr := account.NewAddressFromPublicKey([]byte{0}, v.PublicKey)
+		addr := account.NewAddressFromPublicKeyV0(v.PublicKey)
 		if _, has := reqaddrmaps[string(addr)]; !has {
 			// 一个强制附加签名
 			forceAppendSignAddrs = append(forceAppendSignAddrs, addr)
