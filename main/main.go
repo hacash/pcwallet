@@ -80,16 +80,6 @@ func main() {
 	donate_url, _ := url.Parse("https://explorer.hacash.org/address/" + donate_address)
 	objs.Add(widget.NewHyperlink(donate_address, donate_url))
 
-	// 创建开启通道交易
-	actions.AddCanvasObjectCreateTxOpenChannel(objs, langChangeManager)
-	actions.AddCanvasObjectCreateTxCloseChannel(objs, langChangeManager)
-
-	// 签署交易
-	actions.AddCanvasObjectSignTx(objs, langChangeManager)
-
-	// 检查一笔交易的结构和内容
-	actions.AddCanvasObjectCheckTxContent(objs, langChangeManager)
-
 	// 创建账户
 	actions.AddCanvasObjectCreateAccount(objs, langChangeManager)
 
@@ -101,6 +91,16 @@ func main() {
 
 	// 创建 BTC 转账交易
 	actions.AddCanvasObjectCreateTransferBTC(objs, langChangeManager)
+
+	// 创建开启通道交易
+	actions.AddCanvasObjectCreateTxOpenChannel(objs, langChangeManager)
+	actions.AddCanvasObjectCreateTxCloseChannel(objs, langChangeManager)
+
+	// 签署交易
+	actions.AddCanvasObjectSignTx(objs, langChangeManager)
+
+	// 检查一笔交易的结构和内容
+	actions.AddCanvasObjectCheckTxContent(objs, langChangeManager)
 
 	objs.Add(widget.NewLabel("\n\n"))
 
