@@ -8,6 +8,9 @@ import (
 
 func parseAccountFromAddressOrPasswordOrPrivateKey(stuff string) (*fields.Address, *account.Account) {
 	stuff = strings.Trim(stuff, "\n ")
+	if len(stuff) == 0 {
+		return nil, nil
+	}
 	var e error = nil
 	var addr *fields.Address = nil
 	var acc *account.Account = nil
