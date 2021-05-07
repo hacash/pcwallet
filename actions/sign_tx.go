@@ -117,7 +117,7 @@ func AddCanvasObjectSignTx(box *fyne.Container, langChangeManager *widgets.LangC
 			en += fmt.Sprintf("Transaction signed successfully!\nSign account: <%s>\n", signacc.AddressReadable)
 			zh += fmt.Sprintf("交易签名成功!\n签署账户：<%s>\n", signacc.AddressReadable)
 			showTxBodyHexCall()
-			// 嘉加上签名检查
+			// 加上签名检查
 			checkTxSignStatus(trs, &en, &zh) // 显示签名检查
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": en, "zh": zh})
 			return

@@ -23,10 +23,12 @@ func AddCanvasObjectCreateTxCloseChannel(box *fyne.Container, langChangeManager 
 	page.Add(langChangeManager.NewTextWrapWordLabel(map[string]string{"en": "", "zh": ""}))
 
 	input1 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Channel id", "zh": "通道ID"})
-	input2 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Fee address", "zh": "手续费支付地址"})
+	input2 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Fee address or password or private key", "zh": "手续费支付地址或者密码私钥"})
 	input3 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Fee amount", "zh": "手续费支付数额"})
 	input3.SetText("ㄜ1:244") // 默认手续费
-	input4 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Optional: Tx timestamp", "zh": "选填：交易时间戳"})
+	input4 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Optional: Left password or private key", "zh": "选填：左侧账户的密码或私钥"})
+	input5 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Optional: Right password or private key", "zh": "选填：右侧账户的密码或私钥"})
+	input6 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Optional: Tx timestamp", "zh": "选填：交易时间戳"})
 
 	txbodyshow := widget.NewEntry()
 	txbodyshow.MultiLine = true
@@ -48,21 +50,21 @@ func AddCanvasObjectCreateTxCloseChannel(box *fyne.Container, langChangeManager 
 		}
 		channelId = idbts
 		// 手续费地址和数额
-		fee_addr, e5 := fields.CheckReadableAddress(strings.Trim(input2.Text, "\n "))
-		if e5 != nil {
-			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Fee address format error", "zh": "手续费地址格式错误"})
-			return
-		}
+		fee_addr, fee_acc := parseAccountFromAddressOrPasswordOrPrivateKey(input2.Text)
 		fee_amt, e6 := fields.NewAmountFromString(strings.Trim(input3.Text, "\n "))
 		if e6 != nil {
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Fee amount format error", "zh": "手续费数额格式错误"})
 			return
 		}
 
+		// 左地址和右地址的签名
+		_, acc1 := parseAccountFromAddressOrPasswordOrPrivateKey(input4.Text)
+		_, acc2 := parseAccountFromAddressOrPasswordOrPrivateKey(input5.Text)
+
 		// 交易时间
 		usetime := time.Now().Unix()
-		if len(input4.Text) > 0 {
-			its, e1 := strconv.ParseInt((strings.Trim(input4.Text, "\n ")), 10, 0)
+		if len(input6.Text) > 0 {
+			its, e1 := strconv.ParseInt((strings.Trim(input6.Text, "\n ")), 10, 0)
 			if e1 != nil {
 				langChangeManager.SetText(txbodyshow, map[string]string{"en": "Timestamp format error", "zh": "时间戳格式错误"})
 				return
@@ -85,23 +87,40 @@ func AddCanvasObjectCreateTxCloseChannel(box *fyne.Container, langChangeManager 
 		// 添加 action
 		newTrs.AppendAction(&opcAct)
 
+		// 签名
+		if acc1 != nil {
+			newTrs.FillTargetSign(acc1)
+		}
+		if acc2 != nil {
+			newTrs.FillTargetSign(acc2)
+		}
+		if fee_acc != nil {
+			newTrs.FillTargetSign(fee_acc)
+		}
+
 		// 创建成功
 		txbody, e3 := newTrs.Serialize()
 		if e3 != nil {
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Transaction creation failed", "zh": "交易创建失败"})
 			return
 		}
+		txbodyhex := "\n\n-------- signed txbody hex start --------\n"
+		txbodyhex += hex.EncodeToString(txbody)
+		txbodyhex += "\n-------- signed txbody hex  end  --------\n\n"
 
 		resEn := "Close channel transaction created successfully!" +
 			"\nPlease copy the following [txbody] to sign the tx then submit transaction in online wallet:" +
 			"\n\n[txhash] " + newTrs.Hash().ToHex() +
 			"\n\n[timestamp] " + strconv.FormatInt(usetime, 10) +
-			"\n\n[txbody (not signed)] \n\n" + hex.EncodeToString(txbody)
+			"\n\n[txbody] " + txbodyhex
 		resZh := "关闭通道交易创建成功！" +
 			"\n请复制下面 [交易体/txbody] 内容，先完成签名操作，然后去在线钱包提交交易:" +
 			"\n\n[交易哈希/txhash] " + newTrs.Hash().ToHex() +
 			"\n\n[时间戳/timestamp] " + strconv.FormatInt(usetime, 10) +
-			"\n\n[交易体/txbody (未签名)] \n\n" + hex.EncodeToString(txbody)
+			"\n\n[交易体/txbody] " + txbodyhex
+
+		// 签名检查
+		checkTxSignStatus(&newTrs, &resEn, &resZh)
 
 		langChangeManager.SetText(txbodyshow, map[string]string{"en": resEn, "zh": resZh})
 	})
@@ -110,6 +129,8 @@ func AddCanvasObjectCreateTxCloseChannel(box *fyne.Container, langChangeManager 
 	page.Add(input2)
 	page.Add(input3)
 	page.Add(input4)
+	page.Add(input5)
+	page.Add(input6)
 
 	page.Add(button1)
 	page.Add(txbodyshow)
