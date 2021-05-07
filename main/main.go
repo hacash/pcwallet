@@ -39,11 +39,11 @@ func main() {
 
 	a := app.New()
 	w := a.NewWindow("Hacash Offline PC Wallet / Hacash 离线电脑钱包")
-
-	w.Resize(fyne.Size{
+	windowSize := fyne.Size{
 		Width:  1200,
 		Height: 800,
-	})
+	}
+	w.Resize(windowSize)
 
 	objs := container.NewVBox()
 
