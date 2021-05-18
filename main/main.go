@@ -94,6 +94,8 @@ func main() {
 	actions.AddOpenButtonOnMainOfCreateTransferHACD(objs, langChangeManager)
 	// 创建 BTC 转账交易
 	actions.AddOpenButtonOnMainOfCreateTransferBTC(objs, langChangeManager)
+	// 创建 HAC 与 HACD 互换转账交易
+	actions.AddOpenButtonOnMainOfCreateTransferHACswapHACD(objs, langChangeManager)
 	// 创建开启、关闭通道交易
 	actions.AddOpenButtonOnMainOfCreateTxOpenChannel(objs, langChangeManager)
 	actions.AddOpenButtonOnMainOfCreateTxCloseChannel(objs, langChangeManager)
