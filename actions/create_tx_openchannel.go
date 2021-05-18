@@ -46,11 +46,11 @@ func AddCanvasObjectCreateTxOpenChannel(title map[string]string, box *fyne.Conta
 
 	page.Add(langChangeManager.NewTextWrapWordLabel(map[string]string{"en": "", "zh": ""}))
 
-	input1 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Left address or password or private key", "zh": "左侧账户地址或密码私钥"})
+	input1 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Left Address or Password or PrivateKey", "zh": "左侧账户地址、密码或私钥"})
 	input2 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Left amount", "zh": "左侧存入金额"})
-	input3 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Right address or password or private key", "zh": "右侧账户地址或密码私钥"})
+	input3 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Right Address or Password or PrivateKey", "zh": "右侧账户地址、密码或私钥"})
 	input4 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Right amount", "zh": "右侧存入金额"})
-	input5 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Fee address or password or private key", "zh": "手续费支付地址或密码私钥"})
+	input5 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Fee Address or Password or PrivateKey", "zh": "手续费支付地址、密码或私钥"})
 	input6 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Fee amount", "zh": "手续费支付数额"})
 	input6.SetText("ㄜ8:244") // 默认手续费
 	input7 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Optional: channel id", "zh": "选填：通道ID"})

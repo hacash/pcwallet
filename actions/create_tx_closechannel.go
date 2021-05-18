@@ -46,11 +46,11 @@ func AddCanvasObjectCreateTxCloseChannel(title map[string]string, box *fyne.Cont
 	page.Add(langChangeManager.NewTextWrapWordLabel(map[string]string{"en": "", "zh": ""}))
 
 	input1 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Channel id", "zh": "通道ID"})
-	input2 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Fee address or password or private key", "zh": "手续费支付地址或者密码私钥"})
+	input2 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Fee Address or Password or PrivateKey", "zh": "手续费支付地址或者密码私钥"})
 	input3 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Fee amount", "zh": "手续费支付数额"})
 	input3.SetText("ㄜ1:244") // 默认手续费
-	input4 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Optional: Left password or private key", "zh": "选填：左侧账户的密码或私钥"})
-	input5 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Optional: Right password or private key", "zh": "选填：右侧账户的密码或私钥"})
+	input4 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Optional: Left password or private key", "zh": "选填：通道左侧账户的密码或私钥"})
+	input5 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Optional: Right password or private key", "zh": "选填：通道右侧账户的密码或私钥"})
 	input6 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Optional: Tx timestamp", "zh": "选填：交易时间戳"})
 
 	txbodyshow := widget.NewEntry()

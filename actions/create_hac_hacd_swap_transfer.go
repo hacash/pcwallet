@@ -47,13 +47,13 @@ func AddCanvasObjectCreateTransferHACswapHACD(title map[string]string, box *fyne
 
 	page.Add(langChangeManager.NewTextWrapWordLabel(map[string]string{"en": "Create an atomic swap transaction between HAC and HACD. The transaction is an atomic transaction. It can only succeed at the same time and will not let one of the transfer parties fail.", "zh": "创建一笔 HAC 与 HACD 的原子互换转账交易，交易是原子事务，只可能同时成功，不会让其中转账一方失败。"}))
 
-	input1 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "HACD Payment (HAC Received) PrivateKey or Password", "zh": "钻石转出（HAC收款）地址、私钥或密码"})
+	input1 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "HACD Payment (HAC Received) Address or Password or PrivateKey", "zh": "钻石转出（HAC收款）地址、密码或私钥"})
 	input2 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "HACD name list split by comma", "zh": "输入逗号隔开的钻石字面值列表"})
 	input2.Wrapping = fyne.TextWrapWord
 	input2.MultiLine = true
-	input3 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "HAC Payment (HACD Received) PrivateKey or Password", "zh": "输入HAC转出（钻石收款）地址私钥或密码"})
+	input3 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "HAC Payment (HACD Received) Address or Password or PrivateKey", "zh": "输入HAC转出（钻石收款）地址、密码或私钥"})
 	input4 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "HAC payment quantity - HAC (unit: 248) or use 'ㄜ1:248' format, Example: '0.25' or 'ㄜ25:246'", "zh": "输入HAC支付数量- HAC（单位：枚 - :248）也可直接使用 'ㄜ1:248' 格式， 例如：'0.25' or 'ㄜ25:246'"})
-	input5 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Tx Fee PrivateKey or Password", "zh": "输入支付交易手续费地址、私钥或密码"})
+	input5 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Tx Fee Address or Password or PrivateKey", "zh": "输入支付交易手续费地址、密码或私钥"})
 	input6 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Tx Fee - HAC (unit: 248) or use 'ㄜ1:248' format, Example: '0.25' or 'ㄜ25:246'", "zh": "输入交易手续费 - HAC（单位：枚 - :248）也可直接使用 'ㄜ1:248' 格式， 例如：'0.25' or 'ㄜ25:246'"})
 	input6.SetText("ㄜ8:244")
 	input7 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Optional: Tx timestamp", "zh": "选填：交易时间戳"})
