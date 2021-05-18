@@ -14,9 +14,32 @@ import (
 	"time"
 )
 
-func AddCanvasObjectCreateTransferBTC(box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
+func AddOpenButtonOnMainOfCreateTransferBTC(box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
 
-	box.Add(widget.NewLabel("\n\n"))
+	title := map[string]string{"en": "Create BTC transfer tx", "zh": "创建 BTC 转账交易"}
+
+	button := langChangeManager.NewButton(title, func() {
+		OpenWindowCreateTransferBTC(title, langChangeManager)
+	})
+	box.Add(button)
+}
+
+func OpenWindowCreateTransferBTC(title map[string]string, langChangeManager *widgets.LangChangeManager) fyne.Window {
+
+	// 打开窗口测试
+	testSize := fyne.Size{
+		Width:  800,
+		Height: 700,
+	}
+
+	box := container.NewVBox()
+	AddCanvasObjectCreateTransferBTC(title, box, langChangeManager)
+
+	// 开启窗口
+	return langChangeManager.NewWindowAndShow(title, &testSize, box)
+}
+
+func AddCanvasObjectCreateTransferBTC(title map[string]string, box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
 
 	page := container.NewVBox()
 
@@ -126,7 +149,7 @@ func AddCanvasObjectCreateTransferBTC(box *fyne.Container, langChangeManager *wi
 	page.Add(button1)
 	page.Add(txbodyshow)
 
-	card := langChangeManager.NewCardSetTitle(map[string]string{"en": "Create BTC transfer tx", "zh": "创建 BTC 转账交易"}, page)
+	card := langChangeManager.NewCardSetTitle(title, page)
 	box.Add(card)
 
 }

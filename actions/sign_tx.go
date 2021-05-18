@@ -14,7 +14,32 @@ import (
 	"strings"
 )
 
-func AddCanvasObjectSignTx(box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
+func AddOpenButtonOnMainOfSignTx(box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
+
+	title := map[string]string{"en": "Sign the tx", "zh": "签署交易"}
+
+	button := langChangeManager.NewButton(title, func() {
+		OpenWindowSignTx(title, langChangeManager)
+	})
+	box.Add(button)
+}
+
+func OpenWindowSignTx(title map[string]string, langChangeManager *widgets.LangChangeManager) fyne.Window {
+
+	// 打开窗口测试
+	testSize := fyne.Size{
+		Width:  800,
+		Height: 1000,
+	}
+
+	box := container.NewVBox()
+	AddCanvasObjectSignTx(title, box, langChangeManager)
+
+	// 开启窗口
+	return langChangeManager.NewWindowAndShow(title, &testSize, box)
+}
+
+func AddCanvasObjectSignTx(title map[string]string, box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
 
 	box.Add(widget.NewLabel("\n\n"))
 
@@ -166,7 +191,7 @@ func AddCanvasObjectSignTx(box *fyne.Container, langChangeManager *widgets.LangC
 	page.Add(button3)
 	page.Add(txbodyshow)
 
-	card := langChangeManager.NewCardSetTitle(map[string]string{"en": "Sign the tx", "zh": "签署交易"}, page)
+	card := langChangeManager.NewCardSetTitle(title, page)
 	box.Add(card)
 
 }

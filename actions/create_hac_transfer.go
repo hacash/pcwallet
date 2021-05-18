@@ -14,9 +14,32 @@ import (
 	"time"
 )
 
-func AddCanvasObjectCreateTransferHAC(box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
+func AddOpenButtonOnMainOfCreateTransferHAC(box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
 
-	box.Add(widget.NewLabel("\n\n"))
+	title := map[string]string{"en": "Create HAC simple transfer tx", "zh": "创建 HAC 普通转账交易"}
+
+	button := langChangeManager.NewButton(title, func() {
+		OpenWindowCreateTransferHAC(title, langChangeManager)
+	})
+	box.Add(button)
+}
+
+func OpenWindowCreateTransferHAC(title map[string]string, langChangeManager *widgets.LangChangeManager) fyne.Window {
+
+	// 打开窗口测试
+	testSize := fyne.Size{
+		Width:  800,
+		Height: 700,
+	}
+
+	box := container.NewVBox()
+	AddCanvasObjectCreateTransferHAC(title, box, langChangeManager)
+
+	// 开启窗口
+	return langChangeManager.NewWindowAndShow(title, &testSize, box)
+}
+
+func AddCanvasObjectCreateTransferHAC(title map[string]string, box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
 
 	page := container.NewVBox()
 
@@ -120,7 +143,7 @@ func AddCanvasObjectCreateTransferHAC(box *fyne.Container, langChangeManager *wi
 	page.Add(button1)
 	page.Add(txbodyshow)
 
-	card := langChangeManager.NewCardSetTitle(map[string]string{"en": "Create HAC simple transfer tx", "zh": "创建 HAC 普通转账交易"}, page)
+	card := langChangeManager.NewCardSetTitle(title, page)
 	box.Add(card)
 
 }

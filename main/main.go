@@ -38,22 +38,24 @@ func init() {
 func main() {
 
 	a := app.New()
-	w := a.NewWindow("Hacash Offline PC Wallet / Hacash 离线电脑钱包")
+	w := a.NewWindow("Hacash Offline PC Wallet")
 	windowSize := fyne.Size{
-		Width:  1200,
+		Width:  500,
 		Height: 800,
 	}
 	w.Resize(windowSize)
 
 	objs := container.NewVBox()
 
-	langChangeManager := widgets.NewLangChangeManager()
+	langChangeManager := widgets.NewLangChangeManager(a)
 
 	langchange := widget.NewRadioGroup([]string{"English", "简体中文"}, func(s string) {
 		if s == "English" {
 			langChangeManager.ChangeLangByName("en")
+			w.SetTitle("Hacash Offline PC Wallet")
 		} else {
 			langChangeManager.ChangeLangByName("zh")
+			w.SetTitle("Hacash 离线电脑钱包")
 		}
 	})
 	langchange.Horizontal = true
@@ -70,37 +72,35 @@ func main() {
 
 	donate_address := "1QDc1twwVy3acuftAv3GuNnKwxopYi9VLb"
 
+	lb3 := langChangeManager.NewTextWrapWordLabel(map[string]string{"en": "If you need to test the transfer or donate the wallet to the developer, please transfer to the following address:", "zh": "如果你需要测试转账或者捐赠本钱包的开发者，请向以下地址转账："})
+	objs.Add(lb3)
+	//donate_url, _ := url.Parse("https://explorer.hacash.org/address/" + donate_address)
+	//objs.Add(widget.NewHyperlink(donate_address, donate_url))
+	// 可复制输入框
 	donate_address_input := widget.NewEntry()
 	donate_address_input.Disable()
 	donate_address_input.SetText(donate_address)
 	objs.Add(donate_address_input)
 
-	lb3 := langChangeManager.NewTextWrapWordLabel(map[string]string{"en": "If you need to test the transfer or donate the wallet to the developer, please transfer to the following address:", "zh": "如果你需要测试转账或者捐赠本钱包的开发者，请向以下地址转账："})
-	objs.Add(lb3)
-	donate_url, _ := url.Parse("https://explorer.hacash.org/address/" + donate_address)
-	objs.Add(widget.NewHyperlink(donate_address, donate_url))
+	//
+	prettl := langChangeManager.NewTextWrapWordLabel(map[string]string{"en": "\nPlease click the button below to use the wallet function:\n", "zh": "\n请点击以下按钮使用钱包功能:\n"})
+	objs.Add(prettl)
 
 	// 创建账户
-	actions.AddCanvasObjectCreateAccount(objs, langChangeManager)
-
+	actions.AddOpenButtonOnMainOfCreateAccount(objs, langChangeManager)
 	// 创建 HAC 普通转账交易
-	actions.AddCanvasObjectCreateTransferHAC(objs, langChangeManager)
-
+	actions.AddOpenButtonOnMainOfCreateTransferHAC(objs, langChangeManager)
 	// 创建 HACD 转账交易
-	actions.AddCanvasObjectCreateTransferHACD(objs, langChangeManager)
-
+	actions.AddOpenButtonOnMainOfCreateTransferHACD(objs, langChangeManager)
 	// 创建 BTC 转账交易
-	actions.AddCanvasObjectCreateTransferBTC(objs, langChangeManager)
-
-	// 创建开启通道交易
-	actions.AddCanvasObjectCreateTxOpenChannel(objs, langChangeManager)
-	actions.AddCanvasObjectCreateTxCloseChannel(objs, langChangeManager)
-
+	actions.AddOpenButtonOnMainOfCreateTransferBTC(objs, langChangeManager)
+	// 创建开启、关闭通道交易
+	actions.AddOpenButtonOnMainOfCreateTxOpenChannel(objs, langChangeManager)
+	actions.AddOpenButtonOnMainOfCreateTxCloseChannel(objs, langChangeManager)
 	// 签署交易
-	actions.AddCanvasObjectSignTx(objs, langChangeManager)
-
+	actions.AddOpenButtonOnMainOfSignTx(objs, langChangeManager)
 	// 检查一笔交易的结构和内容
-	actions.AddCanvasObjectCheckTxContent(objs, langChangeManager)
+	actions.AddOpenButtonOnMainOfCheckTxContents(objs, langChangeManager)
 
 	objs.Add(widget.NewLabel("\n\n"))
 
@@ -109,7 +109,9 @@ func main() {
 
 	w.SetContent(scroll)
 
-	w.ShowAndRun()
+	w.Show()
+
+	a.Run()
 
 	// 回退字体设置
 	os.Unsetenv("FYNE_FONT")

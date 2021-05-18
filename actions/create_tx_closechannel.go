@@ -14,9 +14,32 @@ import (
 	"time"
 )
 
-func AddCanvasObjectCreateTxCloseChannel(box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
+func AddOpenButtonOnMainOfCreateTxCloseChannel(box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
 
-	box.Add(widget.NewLabel("\n\n"))
+	title := map[string]string{"en": "Create close channel tx", "zh": "创建关闭通道的交易"}
+
+	button := langChangeManager.NewButton(title, func() {
+		OpenWindowCreateTxCloseChannel(title, langChangeManager)
+	})
+	box.Add(button)
+}
+
+func OpenWindowCreateTxCloseChannel(title map[string]string, langChangeManager *widgets.LangChangeManager) fyne.Window {
+
+	// 打开窗口测试
+	testSize := fyne.Size{
+		Width:  800,
+		Height: 1000,
+	}
+
+	box := container.NewVBox()
+	AddCanvasObjectCreateTxCloseChannel(title, box, langChangeManager)
+
+	// 开启窗口
+	return langChangeManager.NewWindowAndShow(title, &testSize, box)
+}
+
+func AddCanvasObjectCreateTxCloseChannel(title map[string]string, box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
 
 	page := container.NewVBox()
 
@@ -135,7 +158,7 @@ func AddCanvasObjectCreateTxCloseChannel(box *fyne.Container, langChangeManager 
 	page.Add(button1)
 	page.Add(txbodyshow)
 
-	card := langChangeManager.NewCardSetTitle(map[string]string{"en": "Create close channel tx", "zh": "创建关闭通道的交易"}, page)
+	card := langChangeManager.NewCardSetTitle(title, page)
 	box.Add(card)
 
 }

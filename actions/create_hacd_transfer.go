@@ -13,9 +13,32 @@ import (
 	"time"
 )
 
-func AddCanvasObjectCreateTransferHACD(box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
+func AddOpenButtonOnMainOfCreateTransferHACD(box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
 
-	box.Add(widget.NewLabel("\n\n"))
+	title := map[string]string{"en": "Create HACD transfer tx", "zh": "创建 HACD 转账交易"}
+
+	button := langChangeManager.NewButton(title, func() {
+		OpenWindowCreateTransferHACD(title, langChangeManager)
+	})
+	box.Add(button)
+}
+
+func OpenWindowCreateTransferHACD(title map[string]string, langChangeManager *widgets.LangChangeManager) fyne.Window {
+
+	// 打开窗口测试
+	testSize := fyne.Size{
+		Width:  800,
+		Height: 800,
+	}
+
+	box := container.NewVBox()
+	AddCanvasObjectCreateTransferHACD(title, box, langChangeManager)
+
+	// 开启窗口
+	return langChangeManager.NewWindowAndShow(title, &testSize, box)
+}
+
+func AddCanvasObjectCreateTransferHACD(title map[string]string, box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
 
 	page := container.NewVBox()
 
@@ -111,7 +134,7 @@ func AddCanvasObjectCreateTransferHACD(box *fyne.Container, langChangeManager *w
 	page.Add(button1)
 	page.Add(txbodyshow)
 
-	card := langChangeManager.NewCardSetTitle(map[string]string{"en": "Create HACD transfer tx", "zh": "创建 HACD 转账交易"}, page)
+	card := langChangeManager.NewCardSetTitle(title, page)
 	box.Add(card)
 
 }

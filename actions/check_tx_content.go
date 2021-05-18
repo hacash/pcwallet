@@ -14,9 +14,32 @@ import (
 	"time"
 )
 
-func AddCanvasObjectCheckTxContent(box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
+func AddOpenButtonOnMainOfCheckTxContents(box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
 
-	box.Add(widget.NewLabel("\n\n"))
+	title := map[string]string{"en": "Check tx content", "zh": "验证交易内容"}
+
+	button := langChangeManager.NewButton(title, func() {
+		OpenWindowCheckTxContents(title, langChangeManager)
+	})
+	box.Add(button)
+}
+
+func OpenWindowCheckTxContents(title map[string]string, langChangeManager *widgets.LangChangeManager) fyne.Window {
+
+	// 打开窗口测试
+	testSize := fyne.Size{
+		Width:  800,
+		Height: 1000,
+	}
+
+	box := container.NewVBox()
+	AddCanvasObjectCheckTxContents(title, box, langChangeManager)
+
+	// 开启窗口
+	return langChangeManager.NewWindowAndShow(title, &testSize, box)
+}
+
+func AddCanvasObjectCheckTxContents(title map[string]string, box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
 
 	page := container.NewVBox()
 
@@ -40,7 +63,7 @@ func AddCanvasObjectCheckTxContent(box *fyne.Container, langChangeManager *widge
 	page.Add(button1)
 	page.Add(txbodyshow)
 
-	card := langChangeManager.NewCardSetTitle(map[string]string{"en": "Check tx content", "zh": "验证交易内容"}, page)
+	card := langChangeManager.NewCardSetTitle(title, page)
 	box.Add(card)
 
 }

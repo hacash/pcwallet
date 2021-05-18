@@ -2,6 +2,7 @@ package widgets
 
 import (
 	"fyne.io/fyne"
+	"fyne.io/fyne/container"
 	"fyne.io/fyne/widget"
 )
 
@@ -13,21 +14,47 @@ type LangItem struct {
 }
 
 type LangChangeManager struct {
+	a               fyne.App
 	currentLangName string // en zh
 	objs            []interface{}
 	langs           []*LangItem
 }
 
-func NewLangChangeManager() *LangChangeManager {
+func NewLangChangeManager(a fyne.App) *LangChangeManager {
 	return &LangChangeManager{
+		a:               a,
 		currentLangName: "en",
 		objs:            make([]interface{}, 0),
 		langs:           make([]*LangItem, 0),
 	}
 }
 
+func (l *LangChangeManager) NewWindowAndShow(title map[string]string, windowSize *fyne.Size, content fyne.CanvasObject) fyne.Window {
+
+	w := l.a.NewWindow(title[l.currentLangName])
+	w.Resize(*windowSize)
+
+	box := container.NewVBox()
+
+	box.Add(content)
+
+	// 页面翻动
+	scroll := container.NewVScroll(box)
+
+	w.SetContent(scroll)
+
+	w.Show()
+
+	// add ary
+	l.objs = append(l.objs, w)
+	l.langs = append(l.langs, &LangItem{words: title})
+
+	// return ok
+	return w
+}
+
 func (l *LangChangeManager) NewTextWrapWordLabel(texts map[string]string) *widget.Label {
-	lb := widget.NewLabel(texts["en"])
+	lb := widget.NewLabel(texts[l.currentLangName])
 	lb.Wrapping = fyne.TextWrapBreak
 	// add ary
 	l.objs = append(l.objs, lb)
@@ -38,7 +65,7 @@ func (l *LangChangeManager) NewTextWrapWordLabel(texts map[string]string) *widge
 
 func (l *LangChangeManager) NewEntrySetPlaceHolder(texts map[string]string) *widget.Entry {
 	lb := widget.NewEntry()
-	lb.SetPlaceHolder("- " + texts["en"] + " -")
+	lb.SetPlaceHolder("- " + texts[l.currentLangName] + " -")
 	// add ary
 	l.objs = append(l.objs, lb)
 	l.langs = append(l.langs, &LangItem{words: texts})
@@ -47,7 +74,7 @@ func (l *LangChangeManager) NewEntrySetPlaceHolder(texts map[string]string) *wid
 }
 
 func (l *LangChangeManager) NewCardSetTitle(texts map[string]string, content fyne.CanvasObject) *widget.Card {
-	lb := widget.NewCard(texts["en"], "", content)
+	lb := widget.NewCard(texts[l.currentLangName], "", content)
 	// add ary
 	l.objs = append(l.objs, lb)
 	l.langs = append(l.langs, &LangItem{words: texts})
@@ -56,7 +83,7 @@ func (l *LangChangeManager) NewCardSetTitle(texts map[string]string, content fyn
 }
 
 func (l *LangChangeManager) NewButton(texts map[string]string, tapped func()) *widget.Button {
-	lb := widget.NewButton(texts["en"], tapped)
+	lb := widget.NewButton(texts[l.currentLangName], tapped)
 	// add ary
 	l.objs = append(l.objs, lb)
 	l.langs = append(l.langs, &LangItem{words: texts})
@@ -83,6 +110,8 @@ func (l *LangChangeManager) setTextEx(objs interface{}, texts map[string]string,
 	} else if obj, ok := objs.(*widget.Button); ok {
 		obj.SetText(texts[name])
 	} else if obj, ok := objs.(*widget.Card); ok {
+		obj.SetTitle(texts[name])
+	} else if obj, ok := objs.(fyne.Window); ok {
 		obj.SetTitle(texts[name])
 	}
 }
