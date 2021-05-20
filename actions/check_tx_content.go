@@ -127,13 +127,30 @@ func renderTxActionDescribe(mainaddr string, act interfaces.Action) (string, str
 	var en, zh string
 	var actId = act.Kind()
 	// 每一项条款
-	if a, ok := act.(*actions.Action_1_SimpleTransfer); ok {
+	if a, ok := act.(*actions.Action_1_SimpleToTransfer); ok {
 
-		/**************** Action_1_SimpleTransfer ****************/
+		/**************** Action_1_SimpleToTransfer ****************/
 		toaddr := a.ToAddress.ToReadable()
 		amt := a.Amount.ToFinString()
 		en += fmt.Sprintf("Simple transfer: Account <%s> transfers amount <%s> to account <%s>", mainaddr, amt, toaddr)
-		zh += fmt.Sprintf("普通转账： 地址 <%s> 向地址 <%s> 转账 <%s>", mainaddr, toaddr, amt)
+		zh += fmt.Sprintf("普通 HAC 转账： 地址 <%s> 向地址 <%s> 转账 <%s>", mainaddr, toaddr, amt)
+
+	} else if a, ok := act.(*actions.Action_13_FromTransfer); ok {
+
+		/**************** Action_13_FromTransfer ****************/
+		fromaddr := a.FromAddress.ToReadable()
+		amt := a.Amount.ToFinString()
+		en += fmt.Sprintf("HAC From transfer: Account <%s> transfers amount <%s> to account <%s>", fromaddr, amt, mainaddr)
+		zh += fmt.Sprintf("HAC From 转账： 地址 <%s> 向地址 <%s> 转账 <%s>", fromaddr, mainaddr, amt)
+
+	} else if a, ok := act.(*actions.Action_14_FromToTransfer); ok {
+
+		/**************** Action_14_FromToTransfer ****************/
+		fromaddr := a.FromAddress.ToReadable()
+		toaddr := a.ToAddress.ToReadable()
+		amt := a.Amount.ToFinString()
+		en += fmt.Sprintf("HAC From -> To transfer: Account <%s> transfers amount <%s> to account <%s>", fromaddr, amt, toaddr)
+		zh += fmt.Sprintf("HAC From -> To 转账： 地址 <%s> 向地址 <%s> 转账 <%s>", fromaddr, toaddr, amt)
 
 	} else if a, ok := act.(*actions.Action_2_OpenPaymentChannel); ok {
 

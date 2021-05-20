@@ -128,7 +128,7 @@ func AddCanvasObjectCreateTransferHACswapHACD(title map[string]string, box *fyne
 			Diamonds:     diamonds,
 		}
 		// 添加 HAC 支付
-		hacact := actions.NewAction_1_SimpleTransfer(*payHACDaddr, hacAmt)
+		hacact := actions.NewAction_1_SimpleToTransfer(*payHACDaddr, hacAmt)
 		// 添加antions
 		tx.AppendAction(hacdact)
 		tx.AppendAction(hacact)
