@@ -181,7 +181,7 @@ func renderTxActionDescribe(mainaddr string, act interfaces.Action) (string, str
 	} else if a, ok := act.(*actions.Action_5_DiamondTransfer); ok {
 
 		/**************** Action_5_DiamondTransfer *****************/
-		toaddr := a.Address.ToReadable()
+		toaddr := a.ToAddress.ToReadable()
 		dianame := string(a.Diamond)
 		en += fmt.Sprintf("Transfer diamond: name <%s>, collection account <%s>", dianame, toaddr)
 		zh += fmt.Sprintf("区块钻石转账： 字面值 <%s>, 收取账户 <%s>", dianame, toaddr)
@@ -206,7 +206,7 @@ func renderTxActionDescribe(mainaddr string, act interfaces.Action) (string, str
 	} else if a, ok := act.(*actions.Action_8_SimpleSatoshiTransfer); ok {
 
 		/**************** Action_8_SimpleSatoshiTransfer ***********/
-		toaddr := a.Address.ToReadable()
+		toaddr := a.ToAddress.ToReadable()
 		satamt := uint64(a.Amount)
 		en += fmt.Sprintf("Satoshi simple transfer: Account <%s> transfers amount <%s> SAT to account <%s>", mainaddr, satamt, toaddr)
 		zh += fmt.Sprintf("比特币普通转账： 地址 <%s> 向地址 <%s> 转账 <%s> SAT", mainaddr, toaddr, satamt)
