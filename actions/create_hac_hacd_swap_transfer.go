@@ -103,7 +103,7 @@ func AddCanvasObjectCreateTransferHACswapHACD(title map[string]string, box *fyne
 			usetime = its
 		}
 
-		if feeaddr.Equal(*payHACaddr) == false {
+		if feeaddr.NotEqual(*payHACaddr) {
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Pay fee address and HAC transfer out address must be the same", "zh": "手续费支付地址与HAC转出地址必须相同"})
 			return
 		}
