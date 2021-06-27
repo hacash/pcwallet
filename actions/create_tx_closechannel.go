@@ -97,7 +97,7 @@ func AddCanvasObjectCreateTxCloseChannel(title map[string]string, box *fyne.Cont
 
 		// 创建交易
 		var newTrs = transactions.Transaction_2_Simple{
-			Timestamp:   fields.VarUint5(usetime),
+			Timestamp:   fields.BlockTxTimestamp(usetime),
 			MainAddress: *fee_addr,
 			Fee:         *fee_amt,
 		}

@@ -118,7 +118,7 @@ func AddCanvasObjectCreateTransferHACswapHACD(title map[string]string, box *fyne
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Transaction creation failed", "zh": "交易创建失败"})
 			return
 		}
-		tx.Timestamp = fields.VarUint5(usetime)
+		tx.Timestamp = fields.BlockTxTimestamp(usetime)
 		tx.Fee = *fee
 		// HACD 转账
 		hacdact := &actions.Action_6_OutfeeQuantityDiamondTransfer{
