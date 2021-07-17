@@ -68,7 +68,9 @@ func AddCanvasObjectCreateTransferHACswapHACD(title map[string]string, box *fyne
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Please HACD names split by comma", "zh": "请输入钻石列表"})
 			return
 		}
-		diamonds, e := transactions.CreateHACDlistBySplitCommaFromString(input2.Text)
+		//diamonds, e := transactions.CreateHACDlistBySplitCommaFromString(input2.Text)
+		diamonds := fields.DiamondListMaxLen200{}
+		e = diamonds.ParseHACDlistBySplitCommaFromString(input2.Text)
 		if e != nil {
 			en := "HACD names split by comma error: " + e.Error()
 			zh := "钻石名称列表错误: " + e.Error()
@@ -122,10 +124,9 @@ func AddCanvasObjectCreateTransferHACswapHACD(title map[string]string, box *fyne
 		tx.Fee = *fee
 		// HACD 转账
 		hacdact := &actions.Action_6_OutfeeQuantityDiamondTransfer{
-			FromAddress:  *payHACDaddr,
-			ToAddress:    *payHACaddr,
-			DiamondCount: fields.VarUint1(len(diamonds)),
-			Diamonds:     diamonds,
+			FromAddress: *payHACDaddr,
+			ToAddress:   *payHACaddr,
+			DiamondList: diamonds,
 		}
 		// 添加 HAC 支付
 		hacact := actions.NewAction_1_SimpleToTransfer(*payHACDaddr, hacAmt)

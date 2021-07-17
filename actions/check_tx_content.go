@@ -192,8 +192,8 @@ func renderTxActionDescribe(mainaddr string, act interfaces.Action) (string, str
 		fromaddr := a.FromAddress.ToReadable()
 		toaddr := a.ToAddress.ToReadable()
 		dianames := a.GetDiamondNamesSplitByComma() // 名称列表
-		en += fmt.Sprintf("Batch transfer diamonds: account <%s> transfer %d diamonds to account <%s> names is <%s>", fromaddr, a.DiamondCount, toaddr, dianames)
-		zh += fmt.Sprintf("区块钻石批量转账： 账户 <%s> 向账户 <%s> 转移字面值为 <%s> 的 %d 枚钻石", fromaddr, toaddr, dianames, a.DiamondCount)
+		en += fmt.Sprintf("Batch transfer diamonds: account <%s> transfer %d diamonds to account <%s> names is <%s>", fromaddr, a.DiamondList.Count, toaddr, dianames)
+		zh += fmt.Sprintf("区块钻石批量转账： 账户 <%s> 向账户 <%s> 转移字面值为 <%s> 的 %d 枚钻石", fromaddr, toaddr, dianames, a.DiamondList.Count)
 
 	} else if a, ok := act.(*actions.Action_7_SatoshiGenesis); ok {
 
