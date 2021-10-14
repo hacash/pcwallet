@@ -25,7 +25,10 @@ func init() {
 	// 中文字体支持
 	fontPaths := findfont.List()
 	for _, path := range fontPaths {
-		if strings.Contains(path, "simkai.ttf") ||
+		//fmt.Println(path)
+		if strings.Contains(path, "uming.ttc") ||
+			strings.Contains(path, "ukai.ttc") ||
+			strings.Contains(path, "simkai.ttf") ||
 			strings.Contains(path, "simhei.ttf") ||
 			strings.Contains(path, "simsun.ttf") {
 			os.Setenv("FYNE_FONT", path)
@@ -103,6 +106,8 @@ func main() {
 	actions.AddOpenButtonOnMainOfSignTx(objs, langChangeManager)
 	// 检查一笔交易的结构和内容
 	actions.AddOpenButtonOnMainOfCheckTxContents(objs, langChangeManager)
+
+	// 通道链支付相关
 
 	objs.Add(widget.NewLabel("\n\n"))
 
