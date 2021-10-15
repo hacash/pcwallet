@@ -108,6 +108,7 @@ func main() {
 	actions.AddOpenButtonOnMainOfCheckTxContents(objs, langChangeManager)
 
 	// 通道链支付相关
+	actions.AddOpenButtonOnMainOfCheckChannelPaymentBill(objs, langChangeManager)
 
 	objs.Add(widget.NewLabel("\n\n"))
 
