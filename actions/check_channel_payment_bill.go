@@ -126,12 +126,26 @@ func renderChannelPaymentBill(txbodystr string) map[string]string {
 		// 通道支付
 		bobj := bill.(*channel.OffChainCrossNodeSimplePaymentReconciliationBill)
 		dt := bobj.ChannelChainTransferData
-		adinfo := fmt.Sprintf("\nChannel count: %d\n"+
+		prbd := bobj.ChannelChainTransferTargetProveBody
+		signdts := make([]string, dt.MustSignCount)
+		for i, v := range dt.MustSigns {
+			signdts[i] = fmt.Sprintf("    %s: %s",
+				v.GetAddress().ToReadable(), v.Signature.ToHex())
+		}
+		paydrct := "left to right"
+		if uint8(prbd.PayDirection) == channel.ChannelTransferDirectionRightToLeft {
+			paydrct = "right to left"
+		}
+		adinfo := fmt.Sprintf("\nLast pay: %s %s\n"+
+			"\nChannel count: %d\n"+
 			"Sign address count: %d\n"+
-			"Order hash: %s\n",
+			"Order hash: %s\n"+
+			"Addresses & Signs: {\n%s\n}",
+			paydrct, prbd.PayAmount.ToFinString(),
 			dt.ChannelCount,
 			dt.MustSignCount,
-			dt.OrderNoteHashHalfChecker.ToHex())
+			dt.OrderNoteHashHalfChecker.ToHex(),
+			strings.Join(signdts, "\n"))
 		en += adinfo
 		zh += adinfo
 
