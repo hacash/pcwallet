@@ -98,8 +98,10 @@ func renderChannelPaymentBill(txbodystr string) map[string]string {
 			bill.GetAutoNumber(),
 			bill.GetLeftAddress().ToReadable(),
 			bill.GetLeftBalance().ToFinString(),
+			bill.GetLeftSatoshi(),
 			bill.GetRightAddress().ToReadable(),
 			bill.GetRightBalance().ToFinString(),
+			bill.GetRightSatoshi(),
 			bill.GetTimestamp(), tts,
 		)
 	}
@@ -109,17 +111,21 @@ func renderChannelPaymentBill(txbodystr string) map[string]string {
 		"Reconciliation serial number: %d\n" +
 		"Left address: %s\n" +
 		"Left balance: %s\n" +
+		"Left satoshi: %d\n" +
 		"Right address: %s\n" +
 		"Right balance: %s\n" +
+		"Right satoshi: %d\n" +
 		"Timestamp: %d (%s)\n")
 	zh += renderFmt("票据类型: %d\n" +
 		"通道ID: %s\n" +
 		"重用版本: %d\n" +
 		"对账流水号: %d\n" +
 		"左侧地址: %s\n" +
-		"左侧余额: %s\n" +
+		"左侧HAC余额: %s\n" +
+		"左侧SAT余额: %d\n" +
 		"右侧地址: %s\n" +
-		"右侧余额: %s\n" +
+		"右侧HAC余额: %s\n" +
+		"右侧SAT余额: %d\n" +
 		"时间戳: %d (%s)\n")
 
 	if channel.BillTypeCodeSimplePay == bill.TypeCode() {
@@ -133,15 +139,21 @@ func renderChannelPaymentBill(txbodystr string) map[string]string {
 				v.GetAddress().ToReadable(), v.Signature.ToHex())
 		}
 		paydrct := "left to right"
-		if uint8(prbd.PayDirection) == channel.ChannelTransferDirectionRightToLeft {
+		payamt := prbd.PayAmount.ToFinString()
+		pd := uint8(prbd.PayDirection)
+		if pd == channel.ChannelTransferDirectionHacashRightToLeft ||
+			pd == channel.ChannelTransferDirectionSatoshiRightToLeft {
 			paydrct = "right to left"
+		}
+		if pd >= channel.ChannelTransferDirectionSatoshiLeftToRight {
+			payamt = fmt.Sprintf("SAT %d", prbd.PaySatoshi.GetRealSatoshi())
 		}
 		adinfo := fmt.Sprintf("\nLast pay: %s %s\n"+
 			"\nChannel count: %d\n"+
 			"Sign address count: %d\n"+
 			"Order hash: %s\n"+
 			"Addresses & Signs: {\n%s\n}",
-			paydrct, prbd.PayAmount.ToFinString(),
+			paydrct, payamt,
 			dt.ChannelCount,
 			dt.MustSignCount,
 			dt.OrderNoteHashHalfChecker.ToHex(),
