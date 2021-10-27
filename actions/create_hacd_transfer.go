@@ -71,7 +71,7 @@ func AddCanvasObjectCreateTransferHACD(title map[string]string, box *fyne.Contai
 		}
 		payacc := account.GetAccountByPrivateKeyOrPassword(input3.Text)
 		feeacc := account.GetAccountByPrivateKeyOrPassword(input4.Text)
-		fee, e4 := fields.NewAmountFromStringUnsafe(input5.Text)
+		fee, e4 := fields.NewAmountFromString(input5.Text)
 		if e4 != nil {
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Tx Fee format error", "zh": "交易手续费格式错误"})
 			return

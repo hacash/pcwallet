@@ -74,7 +74,7 @@ func AddCanvasObjectCreateTxCloseChannel(title map[string]string, box *fyne.Cont
 		channelId = idbts
 		// 手续费地址和数额
 		fee_addr, fee_acc := parseAccountFromAddressOrPasswordOrPrivateKey(input2.Text)
-		fee_amt, e6 := fields.NewAmountFromStringUnsafe(strings.Trim(input3.Text, "\n "))
+		fee_amt, e6 := fields.NewAmountFromString(strings.Trim(input3.Text, "\n "))
 		if e6 != nil {
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Fee amount format error", "zh": "手续费数额格式错误"})
 			return

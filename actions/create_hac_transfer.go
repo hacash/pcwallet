@@ -70,7 +70,7 @@ func AddCanvasObjectCreateTransferHAC(title map[string]string, box *fyne.Contain
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Receive address format error", "zh": "接收地址格式错误"})
 			return
 		}
-		amount, e3 := fields.NewAmountFromStringUnsafe(input3.Text)
+		amount, e3 := fields.NewAmountFromString(input3.Text)
 		if e3 != nil {
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Transfer quantity format error", "zh": "转账数量格式错误"})
 			return
@@ -79,7 +79,7 @@ func AddCanvasObjectCreateTransferHAC(title map[string]string, box *fyne.Contain
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Transfer quantity digits too long", "zh": "转账数量位数过长"})
 			return
 		}
-		fee, e4 := fields.NewAmountFromStringUnsafe(input4.Text)
+		fee, e4 := fields.NewAmountFromString(input4.Text)
 		if e4 != nil {
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Tx Fee format error", "zh": "交易手续费格式错误"})
 			return

@@ -68,18 +68,18 @@ func AddCanvasObjectCreateTxOpenChannel(title map[string]string, box *fyne.Conta
 		}
 		addr1, acc1 := parseAccountFromAddressOrPasswordOrPrivateKey(input1.Text)
 		addr2, acc2 := parseAccountFromAddressOrPasswordOrPrivateKey(input3.Text)
-		amount1, e3 := fields.NewAmountFromStringUnsafe(strings.Trim(input2.Text, "\n "))
+		amount1, e3 := fields.NewAmountFromString(strings.Trim(input2.Text, "\n "))
 		if e3 != nil {
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Left amount format error", "zh": "左侧数额格式错误"})
 			return
 		}
-		amount2, e4 := fields.NewAmountFromStringUnsafe(strings.Trim(input4.Text, "\n "))
+		amount2, e4 := fields.NewAmountFromString(strings.Trim(input4.Text, "\n "))
 		if e4 != nil {
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Right amount format error", "zh": "右侧数额格式错误"})
 			return
 		}
 		fee_addr, fee_acc := parseAccountFromAddressOrPasswordOrPrivateKey(input5.Text)
-		fee_amt, e6 := fields.NewAmountFromStringUnsafe(strings.Trim(input6.Text, "\n "))
+		fee_amt, e6 := fields.NewAmountFromString(strings.Trim(input6.Text, "\n "))
 		if e6 != nil {
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Fee amount format error", "zh": "手续费数额格式错误"})
 			return

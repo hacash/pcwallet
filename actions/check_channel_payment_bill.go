@@ -6,8 +6,14 @@ import (
 	"fyne.io/fyne"
 	"fyne.io/fyne/container"
 	"fyne.io/fyne/widget"
+	"github.com/hacash/core/account"
+	"github.com/hacash/core/actions"
 	"github.com/hacash/core/channel"
+	"github.com/hacash/core/fields"
+	"github.com/hacash/core/stores"
+	"github.com/hacash/core/transactions"
 	"github.com/hacash/pcwallet/widgets"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -15,7 +21,7 @@ import (
 // 检查通道链支付对账票据
 func AddOpenButtonOnMainOfCheckChannelPaymentBill(box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
 
-	title := map[string]string{"en": "Check channel payment bill", "zh": "验证通道链支付对账票据"}
+	title := map[string]string{"en": "Check channel bill and create arbitration tx ", "zh": "检查通道链票据及创建仲裁交易"}
 
 	button := langChangeManager.NewButton(title, func() {
 		OpenWindowCheckChannelPaymentBill(title, langChangeManager)
@@ -47,25 +53,271 @@ func AddCanvasObjectCheckChannelPaymentBill(title map[string]string, box *fyne.C
 	input1 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Reconciliation or payment bill hex string", "zh": "请输入对账或支付票据数据（bill hex）"})
 	input1.Wrapping = fyne.TextWrapWord
 	input1.MultiLine = true
-	//input1.SetText("01cdfb81f2c55e814b03e1a33653666bc300000001000000000000000e02f701010012336ca7aad576b58d25fb9f0eab8b1e05966272009d7d95e7e9997a3355e6a4d04e1be8adf0fb9532f1039828f6f10399040a00616831af4d7bbb0407d8681d0d86d1e91e00167908003230e909db0810e670a369c6868274136dad12ef005c110abc683fcdfa40027dab15f9f064a7a36bf7009d7d95e7e9997a3355e6a4d04e1be8adf0fb95320012336ca7aad576b58d25fb9f0eab8b1e0596627200f393e23a42bc3431eccfbd0b829929cb9abd20ad00a536637453340a1c1d8ca3f1dec0b44c5728d7a3009cba1cb8f332141964668ea906a38f339f1bbcca001ecf9afca1c31fdeacc2091acc91c2dc5ef28a7905ea0e26d85f5de5c1802e7c2c647be340401df498c67aed8796c5b952e4531be370d5ded9068ce40636ffd719679205916edf600936cf3e5464e47af3c32b3224ebb233e9cac026f8b6f582c52b667a9802ecc09b6ac3123cb5809cea7d39ee136a8c4e611c4328702450366532863bd1b3163759e4d7ba1914b0bc2bd5b0c44561aace63973f5b39d6a4ac97926b9de73c32a423e5ddc2d83c7443b4b087afc4e1e8f19791b2398b5383d11ba02594c41f02a83451e8167768731e89d04a89f24f9df9d5e5351b337ef3e564892590721fcd0f2b9b4dd35863b6f51eb35256a77df41a665b0a9b570b7b8a9755f5a6289e451e0150bf98751ac32e6c4f6a387899220a072f771662c16c3c76a5082de67c23038d8dd5292df3a0f4e8d9dea43a3177844edf34de685b40ec14f748dbb1319ea1ae7fd62805eec76939eebfac556117a9c95cc7ee8fb53dd6d0ff85dca8cc46b124447f9328a9b1f93305a3ee27823e8738636de1346a1127bbb83f95ca4e1ff1021750656f71814e9eccb2fbc692b38c2f64a86651f39c404711218c160701f0de02c28eae823731fbde9ca6d79288de6e31cf6a5fa6440a40a41a8902348a7853161bd533abdd36c63f558701512ea42a99aa5b4467f8f2d7b2b3efebcc33a74e03cb6f7785cabfb38e39f30c35a7a87c845d604c908d402ee232b98f3b4be8c007d982c70236d1fd39ae51211b75967f0788f43059ff96fab2ea48eab53b89bd7571307ca210013cb77a0156327e0bd87c583f3287c53eca46ade0de2df35733e80344ee89b8a8720daf111f3370d127919db2075c2bed1dbf1bfd3ef020f72276f864efefb4208e38b057a9f40e21bda5a3fb7b6429d3ed70babd062650ec27c6cb2704ec5f9cd0dd60819e95bbad3c392a4f1403ba882c033ed761efbb5ef79d570285a2fe9808a81e92aae51b80052478f76096a8eff337d0a6a4d875e4eea6f6e843da23e3c0c2a662a7934fc9b22cfd3ebcb918278c6013e0c7bd9e0ba983ec8252713801392aae0f2f24e4f83cd7ef5878475863494c2d4bf9907508a06a215503f1e4fbfb53b19229bc9cb67f3756f7d40fae6e512457adf3c3b0468b837c2526aab2c5909568cdd60c05ae36b31f9eddc78994b359c3debb07976b7dbd9c406f292e44ef719a8327835206490a3080aa6bf6a8f16f7f1965bda6c2ce77504043")
+	//input1.SetText("02cdfb81f2c55e814b03e1a33653666bc3000000010000000000000024f402275ef40226c200000012336ca7aad576b58d25fb9f0eab8b1e05966272009d7d95e7e9997a3355e6a4d04e1be8adf0fb95320061763fbe021750656f71814e9eccb2fbc692b38c2f64a86651f39c404711218c160701f0de7bb482e574d4c89f3d2226a9eb0551178996125a7fd28464afd403f93a89bfdd13a966ad49b69624820673e90e44d7eedf4ac4d199f8010c2f6a8aef2cbb200c038d8dd5292df3a0f4e8d9dea43a3177844edf34de685b40ec14f748dbb1319ea1b7d7be1bab3a4db4467b59fe425e3f3ffdc298dbeb34bb8c458bc6dd71560d513da31a8b0113e6b2f84d50653581b12239137412897ddec27438a3d40af962ac")
+
+	// 创建仲裁交易
+	input2 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Arbitration tx main address Password or PrivateKey", "zh": "申请仲裁的账户密码或私钥"})
+	input3 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Arbitration tx fee - HAC (unit: 248) or use 'ㄜ1:248' format, Example: '0.25' or 'ㄜ25:246'", "zh": "输入交易手续费 - HAC（单位：枚 - :248）也可直接使用 'ㄜ1:248' 格式， 例如：'0.25' or 'ㄜ25:246'"})
+
+	input4 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Target channel ID", "zh": "目标通道ID"})
+
+	input5 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Optional: Tx timestamp", "zh": "选填：交易时间戳"})
 
 	txbodyshow := widget.NewEntry()
 	txbodyshow.MultiLine = true
 	txbodyshow.Wrapping = fyne.TextWrapBreak
 
-	button1 := langChangeManager.NewButton(map[string]string{"en": "Check", "zh": "查看"}, func() {
+	getUseTime := func() (int64, bool) {
+		usetime := time.Now().Unix()
+		if len(input5.Text) > 0 {
+			its, e1 := strconv.ParseInt(input5.Text, 10, 0)
+			if e1 != nil {
+				langChangeManager.SetText(txbodyshow, map[string]string{"en": "Timestamp format error", "zh": "时间戳格式错误"})
+				return 0, false
+			}
+			usetime = its
+		}
+		return usetime, true
+	}
+
+	button1 := langChangeManager.NewButton(map[string]string{"en": "Check", "zh": "查看票据内容"}, func() {
 		// 显示票据内容
 		langChangeManager.SetText(txbodyshow, renderChannelPaymentBill(input1.Text))
 	})
+	button2 := langChangeManager.NewButton(map[string]string{"en": "Create Submit Bill Arbitration Tx", "zh": "创建提交票据仲裁交易"}, func() {
+		// 创建仲裁交易
+		usetime, ok := getUseTime()
+		if !ok {
+			return
+		}
+		langChangeManager.SetText(txbodyshow, renderCreateArbitrationTx(input1.Text, input2.Text, input3.Text, usetime))
+	})
+	button3 := langChangeManager.NewButton(map[string]string{"en": "Create No Bill Arbitration Close Channel Tx", "zh": "创建无票据单方面关闭通道交易"}, func() {
+		// 创建无票据单方面关闭通道交易
+		usetime, ok := getUseTime()
+		if !ok {
+			return
+		}
+		langChangeManager.SetText(txbodyshow, renderCreateNoBillCloseTx(input4.Text, input2.Text, input3.Text, usetime))
+	})
+	button4 := langChangeManager.NewButton(map[string]string{"en": "Create end arbitration period and close the channel tx", "zh": "创建结束仲裁期并关闭通道交易"}, func() {
+		// 创建结束仲裁期并关闭通道交易
+		usetime, ok := getUseTime()
+		if !ok {
+			return
+		}
+		langChangeManager.SetText(txbodyshow, renderCreateFinishEndArbitrationTx(input4.Text, input2.Text, input3.Text, usetime))
+	})
 
-	// add item
+	// 票据
 	page.Add(input1)
+
+	// 创建仲裁交易
+	page.Add(input2)
+	page.Add(input3)
+	page.Add(input4)
+	page.Add(input5)
+
 	page.Add(button1)
+	page.Add(button2)
+	page.Add(button3)
+	page.Add(button4)
+
+	// 显示
 	page.Add(txbodyshow)
 
 	card := langChangeManager.NewCardSetTitle(title, page)
 	box.Add(card)
 
+}
+
+// 无票据单方面关闭通道
+func renderCreateFinishEndArbitrationTx(cidstr, mainpassword, txfee string, usetime int64) map[string]string {
+	contents := map[string]string{"en": "", "zh": ""}
+	cidstr = strings.Trim(cidstr, "\n ")
+	mainpassword = strings.Trim(mainpassword, "\n ")
+	txfee = strings.Trim(txfee, "\n ")
+	// 检查票据
+	if cidstr == "" {
+		return map[string]string{"en": "Please input channel id", "zh": "请输入通道ID"}
+	}
+	if mainpassword == "" {
+		return map[string]string{"en": "Please input main private key", "zh": "请输入主账户私钥或密码"}
+	}
+	if txfee == "" {
+		return map[string]string{"en": "Please input tx fee", "zh": "请输入交易手续费"}
+	}
+	// 检查通道id
+	channelID, e := hex.DecodeString(cidstr)
+	if e != nil || len(channelID) != stores.ChannelIdLength {
+		return map[string]string{"en": "channel id format error", "zh": "通道ID格式错误"}
+	}
+	// 检查交易费
+	fee, e := fields.NewAmountFromString(txfee)
+	if e != nil {
+		return map[string]string{"en": "tx fee format error", "zh": "手续费格式错误"}
+	}
+	mainacc := account.GetAccountByPrivateKeyOrPassword(mainpassword)
+	// 按类型创建交易
+	tx, e := transactions.NewEmptyTransaction_2_Simple(mainacc.Address)
+	if e != nil {
+		return map[string]string{"en": "create tx error", "zh": "创建交易失败"}
+	}
+	tx.Timestamp = fields.BlockTxTimestamp(usetime) // 时间戳
+	tx.SetFee(fee)
+	tx.AppendAction(&actions.Action_27_ClosePaymentChannelByClaimDistribution{
+		ChannelId: channelID,
+	})
+	// 签名
+	tx.FillTargetSign(mainacc)
+
+	// 显示
+	txhex, e := tx.Serialize()
+	if e != nil {
+		return map[string]string{"en": "Serialize tx error", "zh": "序列化交易失败"}
+	}
+
+	showcon := "Create FinishEndArbitrationTx Create Successfully!\n\n---- tx body start ----\n" +
+		hex.EncodeToString(txhex) +
+		"\n---- tx body end ----\n"
+
+	contents["en"] = showcon
+	contents["zh"] = showcon
+
+	return contents
+
+}
+
+// 无票据单方面关闭通道
+func renderCreateNoBillCloseTx(cidstr, mainpassword, txfee string, usetime int64) map[string]string {
+	contents := map[string]string{"en": "", "zh": ""}
+	cidstr = strings.Trim(cidstr, "\n ")
+	mainpassword = strings.Trim(mainpassword, "\n ")
+	txfee = strings.Trim(txfee, "\n ")
+	// 检查票据
+	if cidstr == "" {
+		return map[string]string{"en": "Please input channel id", "zh": "请输入通道ID"}
+	}
+	if mainpassword == "" {
+		return map[string]string{"en": "Please input main private key", "zh": "请输入主账户私钥或密码"}
+	}
+	if txfee == "" {
+		return map[string]string{"en": "Please input tx fee", "zh": "请输入交易手续费"}
+	}
+	// 检查通道id
+	channelID, e := hex.DecodeString(cidstr)
+	if e != nil || len(channelID) != stores.ChannelIdLength {
+		return map[string]string{"en": "channel id format error", "zh": "通道ID格式错误"}
+	}
+	// 检查交易费
+	fee, e := fields.NewAmountFromString(txfee)
+	if e != nil {
+		return map[string]string{"en": "tx fee format error", "zh": "手续费格式错误"}
+	}
+	mainacc := account.GetAccountByPrivateKeyOrPassword(mainpassword)
+	// 按类型创建交易
+	tx, e := transactions.NewEmptyTransaction_2_Simple(mainacc.Address)
+	if e != nil {
+		return map[string]string{"en": "create tx error", "zh": "创建交易失败"}
+	}
+	tx.Timestamp = fields.BlockTxTimestamp(usetime) // 时间戳
+	tx.SetFee(fee)
+	tx.AppendAction(&actions.Action_22_UnilateralClosePaymentChannelByNothing{
+		ChannelId:          channelID,
+		AssertCloseAddress: mainacc.Address,
+	})
+	// 签名
+	tx.FillTargetSign(mainacc)
+
+	// 显示
+	txhex, e := tx.Serialize()
+	if e != nil {
+		return map[string]string{"en": "Serialize tx error", "zh": "序列化交易失败"}
+	}
+
+	showcon := "Create Tx Create Successfully!\n\n---- tx body start ----\n" +
+		hex.EncodeToString(txhex) +
+		"\n---- tx body end ----\n"
+
+	contents["en"] = showcon
+	contents["zh"] = showcon
+
+	return contents
+
+}
+
+// 提交票据仲裁交易
+func renderCreateArbitrationTx(billbody, mainpassword, txfee string, usetime int64) map[string]string {
+	contents := map[string]string{"en": "", "zh": ""}
+	billbody = strings.Trim(billbody, "\n ")
+	mainpassword = strings.Trim(mainpassword, "\n ")
+	txfee = strings.Trim(txfee, "\n ")
+	// 检查票据
+	if billbody == "" {
+		return map[string]string{"en": "Please input the bill data", "zh": "请输入支付票据数据"}
+	}
+	if mainpassword == "" {
+		return map[string]string{"en": "Please input main private key", "zh": "请输入主账户私钥或密码"}
+	}
+	if txfee == "" {
+		return map[string]string{"en": "Please input tx fee", "zh": "请输入交易手续费"}
+	}
+	txbody, e0 := hex.DecodeString(billbody)
+	if e0 != nil {
+		return map[string]string{"en": "bill data format error", "zh": "支付票据数据格式错误"}
+	}
+	// 解析支付票据
+	bill, _, e1 := channel.ParseReconciliationBalanceBillByPrefixTypeCode(txbody, 0)
+	if e1 != nil {
+		return map[string]string{"en": "bill data error", "zh": "支付票据数据错误"}
+	}
+	// 检查交易费
+	fee, e := fields.NewAmountFromString(txfee)
+	if e != nil {
+		return map[string]string{"en": "tx fee format error", "zh": "手续费格式错误"}
+	}
+	mainacc := account.GetAccountByPrivateKeyOrPassword(mainpassword)
+	// 按类型创建交易
+	tx, e := transactions.NewEmptyTransaction_2_Simple(mainacc.Address)
+	if e != nil {
+		return map[string]string{"en": "create tx error", "zh": "创建交易失败"}
+	}
+	tx.Timestamp = fields.BlockTxTimestamp(usetime) // 时间戳
+	tx.SetFee(fee)
+	// 票据类型
+	if bill.TypeCode() == channel.BillTypeCodeReconciliation {
+		billobj := bill.(*channel.OffChainFormPaymentChannelRealtimeReconciliation)
+		oncbill := billobj.ConvertToOnChain()
+		tx.AppendAction(&actions.Action_23_UnilateralCloseOrRespondChallengePaymentChannelByRealtimeReconciliation{
+			AssertAddress:  mainacc.Address,
+			Reconciliation: *oncbill,
+		})
+
+	} else if bill.TypeCode() == channel.BillTypeCodeSimplePay {
+		billobj := bill.(*channel.OffChainCrossNodeSimplePaymentReconciliationBill)
+		tx.AppendAction(&actions.Action_24_UnilateralCloseOrRespondChallengePaymentChannelByChannelChainTransferBody{
+			AssertAddress:                       mainacc.Address,
+			ChannelChainTransferData:            billobj.ChannelChainTransferData,
+			ChannelChainTransferTargetProveBody: billobj.ChannelChainTransferTargetProveBody,
+		})
+	}
+	// 签名
+	tx.FillTargetSign(mainacc)
+
+	// 显示
+	txhex, e := tx.Serialize()
+	if e != nil {
+		return map[string]string{"en": "Serialize tx error", "zh": "序列化交易失败"}
+	}
+
+	showcon := "Submit Bill Arbitration Tx Create Successfully!\n\n---- tx body start ----\n" +
+		hex.EncodeToString(txhex) +
+		"\n---- tx body end ----\n"
+
+	contents["en"] = showcon
+	contents["zh"] = showcon
+
+	return contents
 }
 
 // 输出票据的内容

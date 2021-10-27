@@ -85,7 +85,7 @@ func AddCanvasObjectCreateTransferBTC(title map[string]string, box *fyne.Contain
 			return
 		}
 		feeacc := account.GetAccountByPrivateKeyOrPassword(input5.Text)
-		fee, e4 := fields.NewAmountFromStringUnsafe(input6.Text)
+		fee, e4 := fields.NewAmountFromString(input6.Text)
 		if e4 != nil {
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Tx Fee format error", "zh": "交易手续费格式错误"})
 			txbodyshow.SetText(" / ")
