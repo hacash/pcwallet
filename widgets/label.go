@@ -1,8 +1,8 @@
 package widgets
 
 import (
-	"fyne.io/fyne"
-	"fyne.io/fyne/widget"
+	fyne "fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/widget"
 )
 
 func NewTextWrapWordLabel(text string) *widget.Label {

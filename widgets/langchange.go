@@ -1,9 +1,9 @@
 package widgets
 
 import (
-	"fyne.io/fyne"
-	"fyne.io/fyne/container"
-	"fyne.io/fyne/widget"
+	fyne "fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/widget"
 )
 
 // map[string]string{"en": "", "zh": ""}
