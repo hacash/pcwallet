@@ -7,7 +7,7 @@ import (
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
 	"github.com/hacash/core/actions"
-	"github.com/hacash/core/interfacev2"
+	"github.com/hacash/core/interfaces"
 	"github.com/hacash/core/transactions"
 	"github.com/hacash/pcwallet/widgets"
 	"strings"
@@ -88,7 +88,7 @@ func renderTxContent(txbodystr string) map[string]string {
 	// 解析
 	var en, zh string
 	var mainaddr = trs.GetAddress().ToReadable()
-	acts := trs.GetActions()
+	acts := trs.GetActionList()
 	txtimestamp := int64(trs.GetTimestamp())
 	txtimestr := time.Unix(txtimestamp, 0).Format("2006-01-02 15:04:05")
 	// en
@@ -123,7 +123,7 @@ func renderTxContent(txbodystr string) map[string]string {
 }
 
 // 解析 action 的描述
-func renderTxActionDescribe(mainaddr string, act interfacev2.Action) (string, string) {
+func renderTxActionDescribe(mainaddr string, act interfaces.Action) (string, string) {
 	var en, zh string
 	var actId = act.Kind()
 

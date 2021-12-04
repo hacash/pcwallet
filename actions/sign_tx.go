@@ -8,7 +8,7 @@ import (
 	"fyne.io/fyne/v2/widget"
 	"github.com/hacash/core/account"
 	"github.com/hacash/core/fields"
-	"github.com/hacash/core/interfacev2"
+	"github.com/hacash/core/interfaces"
 	"github.com/hacash/core/transactions"
 	"github.com/hacash/pcwallet/widgets"
 	"strings"
@@ -197,7 +197,7 @@ func AddCanvasObjectSignTx(title map[string]string, box *fyne.Container, langCha
 }
 
 // 输出签名检查
-func checkTxSignStatus(trs interfacev2.Transaction, en *string, zh *string) {
+func checkTxSignStatus(trs interfaces.Transaction, en *string, zh *string) {
 	// 签名
 	notsignedaddrnum := 0
 	reqaddrmaps := make(map[string]bool)
