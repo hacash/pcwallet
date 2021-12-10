@@ -139,7 +139,7 @@ func renderTxActionDescribe(mainaddr string, act interfaces.Action) (string, str
 		/**************** Action_1_SimpleToTransfer ****************/
 		toaddr := a.ToAddress.ToReadable()
 		amt := a.Amount.ToFinString()
-		fmtEnZh("Simple transfer: Account <%s> transfers amount <%s> to account <%s>", mainaddr,
+		fmtEnZh("Simple transfer: Account <%s> transfers amount <%s> to account <%s>",
 			"普通 HAC 转账： 地址 <%s> 向地址 <%s> 转账 <%s>",
 			mainaddr, toaddr, amt)
 
