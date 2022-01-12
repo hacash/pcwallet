@@ -106,6 +106,8 @@ func main() {
 	actions.AddOpenButtonOnMainOfSignTx(objs, langChangeManager)
 	// 检查一笔交易的结构和内容
 	actions.AddOpenButtonOnMainOfCheckTxContents(objs, langChangeManager)
+	// 签署数据
+	actions.AddOpenButtonOnMainOfSignData(objs, langChangeManager)
 
 	// 通道链支付相关
 	actions.AddOpenButtonOnMainOfCheckChannelPaymentBill(objs, langChangeManager)
