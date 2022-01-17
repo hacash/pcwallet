@@ -30,7 +30,8 @@ func init() {
 			strings.Contains(path, "ukai.ttc") ||
 			strings.Contains(path, "simkai.ttf") ||
 			strings.Contains(path, "simhei.ttf") ||
-			strings.Contains(path, "simsun.ttf") {
+			strings.Contains(path, "simsun.ttf") ||
+			strings.Contains(path, "STHeiti") {
 			os.Setenv("FYNE_FONT", path)
 			break
 		}
