@@ -11,7 +11,6 @@ import (
 )
 
 func AddOpenButtonOnMainOfCreateAccount(box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
-
 	title := map[string]string{"en": "Create Account", "zh": "创建账户"}
 
 	button := langChangeManager.NewButton(title, func() {
@@ -21,7 +20,6 @@ func AddOpenButtonOnMainOfCreateAccount(box *fyne.Container, langChangeManager *
 }
 
 func OpenWindowCreateAccount(title map[string]string, langChangeManager *widgets.LangChangeManager) fyne.Window {
-
 	// 打开窗口测试
 	testSize := fyne.Size{
 		Width:  800,
@@ -36,7 +34,6 @@ func OpenWindowCreateAccount(title map[string]string, langChangeManager *widgets
 }
 
 func AddCanvasObjectCreateAccount(title map[string]string, box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
-
 	page := container.NewVBox()
 
 	page.Add(langChangeManager.NewTextWrapWordLabel(map[string]string{"en": "Through a password or create an account randomly, it is highly recommended to create an account randomly! Because a simple password will be guessed your private key, resulting in the loss of your token! Passwords only support upper and lower case letters, numbers and special symbols, and do not support spaces, Chinese or other characters.", "zh": "通过一个密码或者随机创建一个账户，强烈推荐随机创建账户！因为简单的密码将被人猜中你的私钥，导致你的代币丢失！密码仅支持字母大小写、数字和特殊符号，不支持空格、中文或其他字符。"}))
@@ -78,11 +75,9 @@ func AddCanvasObjectCreateAccount(title map[string]string, box *fyne.Container, 
 
 	card := langChangeManager.NewCardSetTitle(title, page)
 	box.Add(card)
-
 }
 
 func showAccount(langChangeManager *widgets.LangChangeManager, text *widget.Entry, acc *account.Account) {
-
 	en := "Created successfully :" +
 		"\n\n[Address] " + acc.AddressReadable +
 		"\n\n[PublicKey] " + strings.ToUpper(hex.EncodeToString(acc.PublicKey)) +
