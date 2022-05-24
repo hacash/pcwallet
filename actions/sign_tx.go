@@ -15,7 +15,6 @@ import (
 )
 
 func AddOpenButtonOnMainOfSignTx(box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
-
 	title := map[string]string{"en": "Sign the tx", "zh": "签署交易"}
 
 	button := langChangeManager.NewButton(title, func() {
@@ -25,7 +24,6 @@ func AddOpenButtonOnMainOfSignTx(box *fyne.Container, langChangeManager *widgets
 }
 
 func OpenWindowSignTx(title map[string]string, langChangeManager *widgets.LangChangeManager) fyne.Window {
-
 	// 打开窗口测试
 	testSize := fyne.Size{
 		Width:  800,
@@ -40,7 +38,6 @@ func OpenWindowSignTx(title map[string]string, langChangeManager *widgets.LangCh
 }
 
 func AddCanvasObjectSignTx(title map[string]string, box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
-
 	box.Add(widget.NewLabel("\n\n"))
 
 	page := container.NewVBox()
@@ -68,22 +65,26 @@ func AddCanvasObjectSignTx(title map[string]string, box *fyne.Container, langCha
 		// 解析交易
 		txbodystr := input1.Text
 		txbodystr = strings.Trim(txbodystr, "\n ")
+
 		// 检查
 		if txbodystr == "" {
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Please input the txbody ", "zh": "请输入交易体数据"})
 			return
 		}
+
 		txbody, e0 := hex.DecodeString(txbodystr)
 		if e0 != nil {
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "txbody format error", "zh": "交易体数据格式错误"})
 			return
 		}
+
 		// 解析交易
 		trs, _, e1 := transactions.ParseTransaction(txbody, 0)
 		if e1 != nil {
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "txbody data error", "zh": "交易体数据错误"})
 			return
 		}
+
 		// 输出
 		var en, zh string
 		// 显示交易体
@@ -103,6 +104,7 @@ func AddCanvasObjectSignTx(title map[string]string, box *fyne.Container, langCha
 			for _, v := range reqaddrs {
 				reqaddrmaps[string(v)] = true
 			}
+
 			newsigns := make([]fields.Sign, 0)
 			for _, v := range trs.GetSigns() {
 				addr := account.NewAddressFromPublicKeyV0(v.PublicKey)
@@ -110,13 +112,17 @@ func AddCanvasObjectSignTx(title map[string]string, box *fyne.Container, langCha
 					newsigns = append(newsigns, v)
 				}
 			}
+
 			// 重设
 			trs.SetSigns(newsigns)
+
 			// 打印
 			en = fmt.Sprintf("Clean additional signature successfully!\n")
 			zh = fmt.Sprintf("清除所有附加签名成功！\n")
+
 			// 清除成功，显示交易体
 			showTxBodyHexCall()
+
 			// 显示签名检查
 			checkTxSignStatus(trs, &en, &zh)
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": en, "zh": zh})
@@ -128,6 +134,7 @@ func AddCanvasObjectSignTx(title map[string]string, box *fyne.Container, langCha
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Please input private key or password", "zh": "请输入私钥或密码"})
 			return
 		}
+
 		doSign := func() {
 			// 签署
 			err := trs.FillTargetSign(signacc)
@@ -138,6 +145,7 @@ func AddCanvasObjectSignTx(title map[string]string, box *fyne.Container, langCha
 				langChangeManager.SetText(txbodyshow, map[string]string{"en": en, "zh": zh})
 				return
 			}
+
 			// 签名成功，显示交易体
 			en += fmt.Sprintf("Transaction signed successfully!\nSign account: <%s>\n", signacc.AddressReadable)
 			zh += fmt.Sprintf("交易签名成功!\n签署账户：<%s>\n", signacc.AddressReadable)
@@ -193,7 +201,6 @@ func AddCanvasObjectSignTx(title map[string]string, box *fyne.Container, langCha
 
 	card := langChangeManager.NewCardSetTitle(title, page)
 	box.Add(card)
-
 }
 
 // 输出签名检查
@@ -204,6 +211,7 @@ func checkTxSignStatus(trs interfaces.Transaction, en *string, zh *string) {
 	reqaddrs, _ := trs.RequestSignAddresses(nil, false)
 	*en += fmt.Sprintf("\nSignature accounts required (%d): {\n", len(reqaddrs))
 	*zh += fmt.Sprintf("\n交易必要签名检查 (%d): {\n", len(reqaddrs))
+
 	for i, rqa := range reqaddrs {
 		reqaddrmaps[string(rqa)] = true // 标记
 		en_stat := "OK: completed the signature"
@@ -231,6 +239,7 @@ func checkTxSignStatus(trs interfaces.Transaction, en *string, zh *string) {
 			forceAppendSignAddrs = append(forceAppendSignAddrs, addr)
 		}
 	}
+
 	fasac := len(forceAppendSignAddrs)
 	if fasac > 0 {
 		// 显示强制附加签名

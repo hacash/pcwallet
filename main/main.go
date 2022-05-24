@@ -21,7 +21,6 @@ go build -o test/pcwallet pcwallet/main/main.go  && ./test/pcwallet
 */
 
 func init() {
-
 	// 中文字体支持
 	fontPaths := findfont.List()
 	for _, path := range fontPaths {
@@ -36,11 +35,9 @@ func init() {
 			break
 		}
 	}
-
 }
 
 func main() {
-
 	a := app.New()
 	w := a.NewWindow("Hacash Offline PC Wallet")
 	windowSize := fyne.Size{
@@ -52,7 +49,6 @@ func main() {
 	objs := container.NewVBox()
 
 	langChangeManager := widgets.NewLangChangeManager(a)
-
 	langchange := widget.NewRadioGroup([]string{"English", "简体中文"}, func(s string) {
 		if s == "English" {
 			langChangeManager.ChangeLangByName("en")
@@ -67,7 +63,6 @@ func main() {
 	objs.Add(langchange)
 
 	// label
-
 	lb1 := langChangeManager.NewTextWrapWordLabel(map[string]string{"en": "Welcome to use hacash offline security wallet. This program includes creating account, generating HAC, BTC or HACD transfer transaction, opening and closing channel and other functions related to private key security. For the functions of no security issues, such as balance inquiry, transaction inquiry and transaction after submitting signature, please use online Wallet:", "zh": "欢迎使用 Hacash 离线安全钱包，本程序包含创建账户、生成 HAC、BTC 或 HACD 转账交易、开启关闭通道等与私钥安全相关的功能。无安全问题的查询余额、查询交易、提交签名后交易等等功能请使用在线钱包："})
 	objs.Add(lb1)
 
@@ -75,11 +70,9 @@ func main() {
 	objs.Add(widget.NewHyperlink("https://wallet.hacash.org", online_wallet_url))
 
 	donate_address := "1QDc1twwVy3acuftAv3GuNnKwxopYi9VLb"
-
 	lb3 := langChangeManager.NewTextWrapWordLabel(map[string]string{"en": "If you need to test the transfer or donate the wallet to the developer, please transfer to the following address:", "zh": "如果你需要测试转账或者捐赠本钱包的开发者，请向以下地址转账："})
 	objs.Add(lb3)
-	//donate_url, _ := url.Parse("https://explorer.hacash.org/address/" + donate_address)
-	//objs.Add(widget.NewHyperlink(donate_address, donate_url))
+
 	// 可复制输入框
 	donate_address_input := widget.NewEntry()
 	donate_address_input.Disable()
@@ -119,12 +112,9 @@ func main() {
 	scroll := container.NewVScroll(objs)
 
 	w.SetContent(scroll)
-
 	w.Show()
-
 	a.Run()
 
 	// 回退字体设置
 	os.Unsetenv("FYNE_FONT")
-
 }

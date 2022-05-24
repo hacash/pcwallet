@@ -15,7 +15,6 @@ import (
 )
 
 func AddOpenButtonOnMainOfCreateTxCloseChannel(box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
-
 	title := map[string]string{"en": "Create close channel tx", "zh": "创建关闭通道的交易"}
 
 	button := langChangeManager.NewButton(title, func() {
@@ -25,7 +24,6 @@ func AddOpenButtonOnMainOfCreateTxCloseChannel(box *fyne.Container, langChangeMa
 }
 
 func OpenWindowCreateTxCloseChannel(title map[string]string, langChangeManager *widgets.LangChangeManager) fyne.Window {
-
 	// 打开窗口测试
 	testSize := fyne.Size{
 		Width:  800,
@@ -40,7 +38,6 @@ func OpenWindowCreateTxCloseChannel(title map[string]string, langChangeManager *
 }
 
 func AddCanvasObjectCreateTxCloseChannel(title map[string]string, box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
-
 	page := container.NewVBox()
 
 	page.Add(langChangeManager.NewTextWrapWordLabel(map[string]string{"en": "", "zh": ""}))
@@ -71,6 +68,7 @@ func AddCanvasObjectCreateTxCloseChannel(title map[string]string, box *fyne.Cont
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Channel id format error", "zh": "通道ID格式错误"})
 			return
 		}
+
 		channelId = idbts
 		// 手续费地址和数额
 		fee_addr, fee_acc := parseAccountFromAddressOrPasswordOrPrivateKey(input2.Text)
@@ -127,6 +125,7 @@ func AddCanvasObjectCreateTxCloseChannel(title map[string]string, box *fyne.Cont
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Transaction creation failed", "zh": "交易创建失败"})
 			return
 		}
+
 		txbodyhex := "\n\n-------- signed txbody hex start --------\n"
 		txbodyhex += hex.EncodeToString(txbody)
 		txbodyhex += "\n-------- signed txbody hex  end  --------\n\n"
@@ -160,5 +159,4 @@ func AddCanvasObjectCreateTxCloseChannel(title map[string]string, box *fyne.Cont
 
 	card := langChangeManager.NewCardSetTitle(title, page)
 	box.Add(card)
-
 }

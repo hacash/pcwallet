@@ -12,7 +12,6 @@ import (
 )
 
 func AddOpenButtonOnMainOfSignData(box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
-
 	title := map[string]string{"en": "Sign some data", "zh": "签署数据"}
 
 	button := langChangeManager.NewButton(title, func() {
@@ -22,7 +21,6 @@ func AddOpenButtonOnMainOfSignData(box *fyne.Container, langChangeManager *widge
 }
 
 func OpenWindowSignData(title map[string]string, langChangeManager *widgets.LangChangeManager) fyne.Window {
-
 	// 打开窗口测试
 	testSize := fyne.Size{
 		Width:  800,
@@ -37,7 +35,6 @@ func OpenWindowSignData(title map[string]string, langChangeManager *widgets.Lang
 }
 
 func AddCanvasObjectSignData(title map[string]string, box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
-
 	box.Add(widget.NewLabel("\n\n"))
 
 	page := container.NewVBox()
@@ -64,10 +61,12 @@ func AddCanvasObjectSignData(title map[string]string, box *fyne.Container, langC
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Please input the data for sign ", "zh": "请输入待签名数据"})
 			return
 		}
+
 		if len(input2.Text) == 0 {
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Please input private key or password", "zh": "请输入私钥或密码"})
 			return
 		}
+
 		signacc := account.GetAccountByPrivateKeyOrPassword(input2.Text)
 		sckdata := fields.CreateSignCheckData(input1.Text)
 		e := sckdata.FillSign(signacc)
@@ -75,11 +74,13 @@ func AddCanvasObjectSignData(title map[string]string, box *fyne.Container, langC
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": fmt.Sprintf("do sign error: %s", e.Error()), "zh": fmt.Sprintf("签名发生错误: %s", e.Error())})
 			return
 		}
+
 		sckdts, e := sckdata.Serialize()
 		if e != nil {
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": fmt.Sprintf("SignCheckData serialize error: %s", e.Error()), "zh": fmt.Sprintf("SignCheckData 序列化错误: %s", e.Error())})
 			return
 		}
+
 		// 输出
 		var en, zh string
 		// 显示交易体
@@ -102,5 +103,4 @@ func AddCanvasObjectSignData(title map[string]string, box *fyne.Container, langC
 
 	card := langChangeManager.NewCardSetTitle(title, page)
 	box.Add(card)
-
 }

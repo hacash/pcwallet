@@ -11,6 +11,7 @@ func parseAccountFromAddressOrPasswordOrPrivateKey(stuff string) (*fields.Addres
 	if len(stuff) == 0 {
 		return nil, nil
 	}
+
 	var e error = nil
 	var addr *fields.Address = nil
 	var acc *account.Account = nil
@@ -18,8 +19,10 @@ func parseAccountFromAddressOrPasswordOrPrivateKey(stuff string) (*fields.Addres
 	if addr, e = fields.CheckReadableAddress(stuff); e == nil {
 		return addr, acc
 	}
+
 	// 判断是否为私钥
 	acc = account.GetAccountByPrivateKeyOrPassword(stuff)
 	a := fields.Address(acc.Address)
+
 	return &a, acc
 }

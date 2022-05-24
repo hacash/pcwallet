@@ -15,7 +15,6 @@ import (
 )
 
 func AddOpenButtonOnMainOfCreateTransferBTC(box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
-
 	title := map[string]string{"en": "Create BTC transfer tx", "zh": "创建 BTC 转账交易"}
 
 	button := langChangeManager.NewButton(title, func() {
@@ -25,7 +24,6 @@ func AddOpenButtonOnMainOfCreateTransferBTC(box *fyne.Container, langChangeManag
 }
 
 func OpenWindowCreateTransferBTC(title map[string]string, langChangeManager *widgets.LangChangeManager) fyne.Window {
-
 	// 打开窗口测试
 	testSize := fyne.Size{
 		Width:  800,
@@ -40,7 +38,6 @@ func OpenWindowCreateTransferBTC(title map[string]string, langChangeManager *wid
 }
 
 func AddCanvasObjectCreateTransferBTC(title map[string]string, box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
-
 	page := container.NewVBox()
 
 	page.Add(langChangeManager.NewTextWrapWordLabel(map[string]string{"en": "Creates a normal BTC transaction. Note: the amount of transfer is actual receive amount, the transaction fee will be use HAC deducted additionally; it is suggested that the transaction fee should not be less than 0.0001 pieces; the transaction timestamp is optional, the current time will be used by default. BTC unit:", "zh": "创建一笔 BTC 普通转账交易。注意：转账数量为实到数额，交易手续费将额外扣除 HAC；交易手续费建议不低于 0.0001 枚；交易时间戳为选填，不填则默认取用当前时间。比特币单位:"}))
@@ -63,16 +60,19 @@ func AddCanvasObjectCreateTransferBTC(title map[string]string, box *fyne.Contain
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Please input BTC Payment address", "zh": "请输入 BTC 付款地址"})
 			return
 		}
+
 		addr1, e1 := fields.CheckReadableAddress(input1.Text)
 		if e1 != nil {
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "BTC Payment address format error", "zh": "BTC 付款地址格式错误"})
 			return
 		}
+
 		addr2, e2 := fields.CheckReadableAddress(input2.Text)
 		if e2 != nil {
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "BTC Receive address format error", "zh": "BTC 接收地址格式错误"})
 			return
 		}
+
 		amount, e3 := strconv.ParseUint(input3.Text, 10, 0)
 		if e3 != nil {
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "BTC Transfer quantity format error", "zh": "转账数量格式错误"})
@@ -84,6 +84,7 @@ func AddCanvasObjectCreateTransferBTC(title map[string]string, box *fyne.Contain
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "The private key or password does not \nmatch the payment address", "zh": "私钥或密码不匹配付款地址"})
 			return
 		}
+
 		feeacc := account.GetAccountByPrivateKeyOrPassword(input5.Text)
 		fee, e4 := fields.NewAmountFromString(input6.Text)
 		if e4 != nil {
@@ -91,11 +92,13 @@ func AddCanvasObjectCreateTransferBTC(title map[string]string, box *fyne.Contain
 			txbodyshow.SetText(" / ")
 			return
 		}
+
 		if len(fee.Numeral) > 2 {
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Tx Fee digits too long", "zh": "手续费数值位数过长"})
 			txbodyshow.SetText(" / ")
 			return
 		}
+
 		usetime := time.Now().Unix()
 		if len(input7.Text) > 0 {
 			its, e1 := strconv.ParseInt(input7.Text, 10, 0)
@@ -151,5 +154,4 @@ func AddCanvasObjectCreateTransferBTC(title map[string]string, box *fyne.Contain
 
 	card := langChangeManager.NewCardSetTitle(title, page)
 	box.Add(card)
-
 }

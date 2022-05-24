@@ -15,7 +15,6 @@ import (
 )
 
 func AddOpenButtonOnMainOfCheckTxContents(box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
-
 	title := map[string]string{"en": "Check tx content", "zh": "验证交易内容"}
 
 	button := langChangeManager.NewButton(title, func() {
@@ -25,7 +24,6 @@ func AddOpenButtonOnMainOfCheckTxContents(box *fyne.Container, langChangeManager
 }
 
 func OpenWindowCheckTxContents(title map[string]string, langChangeManager *widgets.LangChangeManager) fyne.Window {
-
 	// 打开窗口测试
 	testSize := fyne.Size{
 		Width:  800,
@@ -40,9 +38,7 @@ func OpenWindowCheckTxContents(title map[string]string, langChangeManager *widge
 }
 
 func AddCanvasObjectCheckTxContents(title map[string]string, box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
-
 	page := container.NewVBox()
-
 	page.Add(langChangeManager.NewTextWrapWordLabel(map[string]string{"en": "View the operation items, conditions and contents of a transaction, and check whether the signature is completed", "zh": "查看一笔交易具体包含的操作项目、条件和内容，以及检查是否完成签名"}))
 
 	input1 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Transaction body hex string", "zh": "请输入交易体数据（txbody hex）"})
@@ -65,26 +61,29 @@ func AddCanvasObjectCheckTxContents(title map[string]string, box *fyne.Container
 
 	card := langChangeManager.NewCardSetTitle(title, page)
 	box.Add(card)
-
 }
 
 // 输出一笔交易的内容
 func renderTxContent(txbodystr string) map[string]string {
 	contents := map[string]string{"en": "", "zh": ""}
 	txbodystr = strings.Trim(txbodystr, "\n ")
+
 	// 检查
 	if txbodystr == "" {
 		return map[string]string{"en": "Please input the txbody ", "zh": "请输入交易体数据"}
 	}
+
 	txbody, e0 := hex.DecodeString(txbodystr)
 	if e0 != nil {
 		return map[string]string{"en": "txbody format error", "zh": "交易体数据格式错误"}
 	}
+
 	// 解析交易
 	trs, _, e1 := transactions.ParseTransaction(txbody, 0)
 	if e1 != nil {
 		return map[string]string{"en": "txbody data error", "zh": "交易体数据错误"}
 	}
+
 	// 解析
 	var en, zh string
 	var mainaddr = trs.GetAddress().ToReadable()
@@ -101,6 +100,7 @@ func renderTxContent(txbodystr string) map[string]string {
 	zh += "\n手续费账户: <" + mainaddr + "> 支付手续费 <" + trs.GetFee().ToFinString() + ">"
 	zh += fmt.Sprintf("\n时间戳: <%d> (%s)", txtimestamp, txtimestr)
 	zh += fmt.Sprintf("\n\n交易包含内容 (%d): [\n", len(acts))
+
 	// loop actions
 	for i, act := range acts {
 		nod := fmt.Sprintf("\n%d). ", i+1)
@@ -111,6 +111,7 @@ func renderTxContent(txbodystr string) map[string]string {
 		en += l1
 		zh += l2
 	}
+
 	end1 := "\n\n]\n"
 	en += end1
 	zh += end1
@@ -119,6 +120,7 @@ func renderTxContent(txbodystr string) map[string]string {
 	// ret ok
 	contents["en"] = en
 	contents["zh"] = zh
+
 	return contents
 }
 
@@ -135,25 +137,20 @@ func renderTxActionDescribe(mainaddr string, act interfaces.Action) (string, str
 
 	// 每一项条款
 	if a, ok := act.(*actions.Action_1_SimpleToTransfer); ok {
-
 		/**************** Action_1_SimpleToTransfer ****************/
 		toaddr := a.ToAddress.ToReadable()
 		amt := a.Amount.ToFinString()
 		fmtEnZh("Simple transfer: Account <%s> transfers amount <%s> to account <%s>",
 			"普通 HAC 转账： 地址 <%s> 向地址 <%s> 转账 <%s>",
 			mainaddr, toaddr, amt)
-
 	} else if a, ok := act.(*actions.Action_13_FromTransfer); ok {
-
 		/**************** Action_13_FromTransfer ****************/
 		fromaddr := a.FromAddress.ToReadable()
 		amt := a.Amount.ToFinString()
 		fmtEnZh("HAC From transfer: Account <%s> transfers amount <%s> to account <%s>",
 			"HAC From 转账： 地址 <%s> 向地址 <%s> 转账 <%s>",
 			fromaddr, mainaddr, amt)
-
 	} else if a, ok := act.(*actions.Action_14_FromToTransfer); ok {
-
 		/**************** Action_14_FromToTransfer ****************/
 		fromaddr := a.FromAddress.ToReadable()
 		toaddr := a.ToAddress.ToReadable()
@@ -161,9 +158,7 @@ func renderTxActionDescribe(mainaddr string, act interfaces.Action) (string, str
 		fmtEnZh("HAC From -> To transfer: Account <%s> transfers amount <%s> to account <%s>",
 			"HAC From -> To 转账： 地址 <%s> 向地址 <%s> 转账 <%s>",
 			fromaddr, toaddr, amt)
-
 	} else if a, ok := act.(*actions.Action_2_OpenPaymentChannel); ok {
-
 		/**************** Action_2_OpenPaymentChannel *************/
 		cid := a.ChannelId.ToHex()
 		addr1 := a.LeftAddress.ToReadable()
@@ -173,7 +168,6 @@ func renderTxActionDescribe(mainaddr string, act interfaces.Action) (string, str
 		fmtEnZh("Open payment channel: Open ID = <%s> channel, account <%s> and <%s> respective deposit <%s> and <%s> into channel",
 			"开启支付通道： 开启 ID 为 <%s> 的通道，账户 <%s> 和 <%s> 分别各自向通道内存入 <%s> 及 <%s>",
 			cid, addr1, addr2, amt1, amt2)
-
 	} else if a, ok := act.(*actions.Action_3_ClosePaymentChannel); ok {
 
 		/**************** Action_3_ClosePaymentChannel ************/

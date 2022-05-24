@@ -17,7 +17,6 @@ import (
 // curl http://192.168.2.108:3381/operatehex -X POST -d '00000001.....'
 
 func AddOpenButtonOnMainOfCreateTransferHACswapHACD(box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
-
 	title := map[string]string{"en": "Create HAC ⇄ HACD swap transfer tx", "zh": "创建 HAC 与 HACD 互换转账交易"}
 
 	button := langChangeManager.NewButton(title, func() {
@@ -27,7 +26,6 @@ func AddOpenButtonOnMainOfCreateTransferHACswapHACD(box *fyne.Container, langCha
 }
 
 func OpenWindowCreateTransferHACswapHACD(title map[string]string, langChangeManager *widgets.LangChangeManager) fyne.Window {
-
 	// 打开窗口测试
 	testSize := fyne.Size{
 		Width:  800,
@@ -42,7 +40,6 @@ func OpenWindowCreateTransferHACswapHACD(title map[string]string, langChangeMana
 }
 
 func AddCanvasObjectCreateTransferHACswapHACD(title map[string]string, box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
-
 	page := container.NewVBox()
 
 	page.Add(langChangeManager.NewTextWrapWordLabel(map[string]string{"en": "Create an atomic swap transaction between HAC and HACD. The transaction is an atomic transaction. It can only succeed at the same time and will not let one of the transfer parties fail.", "zh": "创建一笔 HAC 与 HACD 的原子互换转账交易，交易是原子事务，只可能同时成功，不会让其中转账一方失败。"}))
@@ -68,7 +65,7 @@ func AddCanvasObjectCreateTransferHACswapHACD(title map[string]string, box *fyne
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Please HACD names split by comma", "zh": "请输入钻石列表"})
 			return
 		}
-		//diamonds, e := transactions.CreateHACDlistBySplitCommaFromString(input2.Text)
+
 		diamonds := fields.DiamondListMaxLen200{}
 		e = diamonds.ParseHACDlistBySplitCommaFromString(input2.Text)
 		if e != nil {
@@ -77,6 +74,7 @@ func AddCanvasObjectCreateTransferHACswapHACD(title map[string]string, box *fyne
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": en, "zh": zh})
 			return
 		}
+
 		payHACDacc := account.GetAccountByPrivateKeyOrPassword(input1.Text)
 		payHACDaddr, payHACDacc := parseAccountFromAddressOrPasswordOrPrivateKey(input1.Text)
 		payHACaddr, payHACacc := parseAccountFromAddressOrPasswordOrPrivateKey(input3.Text)
@@ -85,16 +83,19 @@ func AddCanvasObjectCreateTransferHACswapHACD(title map[string]string, box *fyne
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "HAC payment quantity", "zh": "HAC数量格式错误"})
 			return
 		}
+
 		feeaddr, feeacc := parseAccountFromAddressOrPasswordOrPrivateKey(input5.Text)
 		fee, e4 := fields.NewAmountFromString(input6.Text)
 		if e4 != nil {
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Tx Fee format error", "zh": "交易手续费格式错误"})
 			return
 		}
+
 		if len(fee.Numeral) > 2 {
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Tx Fee digits too long", "zh": "手续费位数过长"})
 			return
 		}
+
 		usetime := time.Now().Unix()
 		if len(input7.Text) > 0 {
 			its, e1 := strconv.ParseInt(input7.Text, 10, 0)
@@ -116,10 +117,12 @@ func AddCanvasObjectCreateTransferHACswapHACD(title map[string]string, box *fyne
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Transaction creation failed: \n\n" + e0.Error(), "zh": "交易创建失败: \n\n" + e0.Error()})
 			return
 		}
+
 		if tx == nil {
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Transaction creation failed", "zh": "交易创建失败"})
 			return
 		}
+
 		tx.Timestamp = fields.BlockTxTimestamp(usetime)
 		tx.Fee = *fee
 		// HACD 转账
@@ -128,8 +131,10 @@ func AddCanvasObjectCreateTransferHACswapHACD(title map[string]string, box *fyne
 			ToAddress:   *payHACaddr,
 			DiamondList: diamonds,
 		}
+
 		// 添加 HAC 支付
 		hacact := actions.NewAction_1_SimpleToTransfer(*payHACDaddr, hacAmt)
+
 		// 添加antions
 		tx.AppendAction(hacdact)
 		tx.AppendAction(hacact)
@@ -144,6 +149,7 @@ func AddCanvasObjectCreateTransferHACswapHACD(title map[string]string, box *fyne
 		if feeacc != nil {
 			tx.FillTargetSign(feeacc)
 		}
+
 		// 创建成功
 		txbody, e3 := tx.Serialize()
 		if e3 != nil {
@@ -170,7 +176,6 @@ func AddCanvasObjectCreateTransferHACswapHACD(title map[string]string, box *fyne
 		checkTxSignStatus(tx, &resEn, &resZh)
 
 		langChangeManager.SetText(txbodyshow, map[string]string{"en": resEn, "zh": resZh})
-
 	})
 
 	page.Add(input1)
@@ -186,5 +191,4 @@ func AddCanvasObjectCreateTransferHACswapHACD(title map[string]string, box *fyne
 
 	card := langChangeManager.NewCardSetTitle(title, page)
 	box.Add(card)
-
 }

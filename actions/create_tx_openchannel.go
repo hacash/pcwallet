@@ -16,7 +16,6 @@ import (
 )
 
 func AddOpenButtonOnMainOfCreateTxOpenChannel(box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
-
 	title := map[string]string{"en": "Create open channel tx", "zh": "创建开启通道的交易"}
 
 	button := langChangeManager.NewButton(title, func() {
@@ -26,7 +25,6 @@ func AddOpenButtonOnMainOfCreateTxOpenChannel(box *fyne.Container, langChangeMan
 }
 
 func OpenWindowCreateTxOpenChannel(title map[string]string, langChangeManager *widgets.LangChangeManager) fyne.Window {
-
 	// 打开窗口测试
 	testSize := fyne.Size{
 		Width:  800,
@@ -41,7 +39,6 @@ func OpenWindowCreateTxOpenChannel(title map[string]string, langChangeManager *w
 }
 
 func AddCanvasObjectCreateTxOpenChannel(title map[string]string, box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
-
 	page := container.NewVBox()
 
 	page.Add(langChangeManager.NewTextWrapWordLabel(map[string]string{"en": "", "zh": ""}))
@@ -61,11 +58,11 @@ func AddCanvasObjectCreateTxOpenChannel(title map[string]string, box *fyne.Conta
 	txbodyshow.Wrapping = fyne.TextWrapBreak
 
 	button1 := langChangeManager.NewButton(map[string]string{"en": "Create open channel Tx", "zh": "确认创建开启通道的交易"}, func() {
-
 		if input1.Text == "" || input2.Text == "" || input3.Text == "" || input4.Text == "" || input5.Text == "" || input6.Text == "" {
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Please finish fields", "zh": "请完善输入内容"})
 			return
 		}
+
 		addr1, acc1 := parseAccountFromAddressOrPasswordOrPrivateKey(input1.Text)
 		addr2, acc2 := parseAccountFromAddressOrPasswordOrPrivateKey(input3.Text)
 		amount1, e3 := fields.NewAmountFromString(strings.Trim(input2.Text, "\n "))
@@ -73,11 +70,13 @@ func AddCanvasObjectCreateTxOpenChannel(title map[string]string, box *fyne.Conta
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Left amount format error", "zh": "左侧数额格式错误"})
 			return
 		}
+
 		amount2, e4 := fields.NewAmountFromString(strings.Trim(input4.Text, "\n "))
 		if e4 != nil {
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Right amount format error", "zh": "右侧数额格式错误"})
 			return
 		}
+
 		fee_addr, fee_acc := parseAccountFromAddressOrPasswordOrPrivateKey(input5.Text)
 		fee_amt, e6 := fields.NewAmountFromString(strings.Trim(input6.Text, "\n "))
 		if e6 != nil {
@@ -145,12 +144,14 @@ func AddCanvasObjectCreateTxOpenChannel(title map[string]string, box *fyne.Conta
 		if fee_acc != nil {
 			newTrs.FillTargetSign(fee_acc)
 		}
+
 		// 创建成功
 		txbody, e3 := newTrs.Serialize()
 		if e3 != nil {
 			langChangeManager.SetText(txbodyshow, map[string]string{"en": "Transaction creation failed", "zh": "交易创建失败"})
 			return
 		}
+
 		txbodyhex := "\n\n-------- signed txbody hex start --------\n"
 		txbodyhex += hex.EncodeToString(txbody)
 		txbodyhex += "\n-------- signed txbody hex  end  --------\n\n"
@@ -188,5 +189,4 @@ func AddCanvasObjectCreateTxOpenChannel(title map[string]string, box *fyne.Conta
 
 	card := langChangeManager.NewCardSetTitle(title, page)
 	box.Add(card)
-
 }

@@ -6,9 +6,6 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-// map[string]string{"en": "", "zh": ""}
-// langChangeManager.SetText(accshow, map[string]string{"en": "", "zh": ""})
-
 type LangItem struct {
 	words map[string]string
 }
@@ -30,19 +27,16 @@ func NewLangChangeManager(a fyne.App) *LangChangeManager {
 }
 
 func (l *LangChangeManager) NewWindowAndShow(title map[string]string, windowSize *fyne.Size, content fyne.CanvasObject) fyne.Window {
-
 	w := l.a.NewWindow(title[l.currentLangName])
 	w.Resize(*windowSize)
 
 	box := container.NewVBox()
-
 	box.Add(content)
 
 	// 页面翻动
 	scroll := container.NewVScroll(box)
 
 	w.SetContent(scroll)
-
 	w.Show()
 
 	// add ary
@@ -66,6 +60,7 @@ func (l *LangChangeManager) NewTextWrapWordLabel(texts map[string]string) *widge
 func (l *LangChangeManager) NewEntrySetPlaceHolder(texts map[string]string) *widget.Entry {
 	lb := widget.NewEntry()
 	lb.SetPlaceHolder("- " + texts[l.currentLangName] + " -")
+
 	// add ary
 	l.objs = append(l.objs, lb)
 	l.langs = append(l.langs, &LangItem{words: texts})
@@ -75,6 +70,7 @@ func (l *LangChangeManager) NewEntrySetPlaceHolder(texts map[string]string) *wid
 
 func (l *LangChangeManager) NewCardSetTitle(texts map[string]string, content fyne.CanvasObject) *widget.Card {
 	lb := widget.NewCard(texts[l.currentLangName], "", content)
+
 	// add ary
 	l.objs = append(l.objs, lb)
 	l.langs = append(l.langs, &LangItem{words: texts})
@@ -84,6 +80,7 @@ func (l *LangChangeManager) NewCardSetTitle(texts map[string]string, content fyn
 
 func (l *LangChangeManager) NewButton(texts map[string]string, tapped func()) *widget.Button {
 	lb := widget.NewButton(texts[l.currentLangName], tapped)
+
 	// add ary
 	l.objs = append(l.objs, lb)
 	l.langs = append(l.langs, &LangItem{words: texts})
@@ -121,11 +118,13 @@ func (l *LangChangeManager) ChangeLangByName(name string) {
 	} else {
 		return // do nothing
 	}
+
 	// check
 	if len(l.langs) != len(l.objs) {
 		panic("len(words) != len(l.objs)")
 		return // do nothing
 	}
+
 	l.currentLangName = name
 	for i, v := range l.objs {
 		l.setTextEx(v, l.langs[i].words, true)
