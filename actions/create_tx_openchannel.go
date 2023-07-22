@@ -122,6 +122,9 @@ func AddCanvasObjectCreateTxOpenChannel(title map[string]string, box *fyne.Conta
 			Fee:         *fee_amt,
 		}
 
+		// for fork or test chain ID
+		MaybeForTransactionAddCheckChainID(&newTrs)
+
 		// action
 		opcAct := actions.Action_2_OpenPaymentChannel{
 			ChannelId:    channelId,

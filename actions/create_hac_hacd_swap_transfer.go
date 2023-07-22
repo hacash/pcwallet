@@ -123,6 +123,9 @@ func AddCanvasObjectCreateTransferHACswapHACD(title map[string]string, box *fyne
 			return
 		}
 
+		// for fork or test chain ID
+		MaybeForTransactionAddCheckChainID(tx)
+
 		tx.Timestamp = fields.BlockTxTimestamp(usetime)
 		tx.Fee = *fee
 		// HACD 转账

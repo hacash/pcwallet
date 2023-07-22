@@ -116,6 +116,9 @@ func AddCanvasObjectCreateTransferHAC(title map[string]string, box *fyne.Contain
 			return
 		}
 
+		// for fork or test chain ID
+		MaybeForTransactionAddCheckChainID(tx)
+
 		// 创建成功
 		txbody, e3 := tx.Serialize()
 		if e3 != nil {

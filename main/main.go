@@ -10,6 +10,7 @@ import (
 	"github.com/hacash/pcwallet/widgets"
 	"net/url"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -106,6 +107,9 @@ func main() {
 	// 通道链支付相关
 	actions.AddOpenButtonOnMainOfCheckChannelPaymentBill(objs, langChangeManager)
 
+	// fork or test chain ID
+	appendChainIDinput(langChangeManager, objs)
+
 	objs.Add(widget.NewLabel("\n\n"))
 
 	// 页面翻动
@@ -117,4 +121,26 @@ func main() {
 
 	// 回退字体设置
 	os.Unsetenv("FYNE_FONT")
+}
+
+// fork or test chain ID
+func appendChainIDinput(langChangeManager *widgets.LangChangeManager, objs *fyne.Container) {
+
+	ttl2 := langChangeManager.NewTextWrapWordLabel(map[string]string{"en": "\nIf you wish to use a test chain or fork chain, please fill in the target chain ID in the input box below and click the confirm button:\n", "zh": "\n如果您希望使用测试链或者分叉链，请在下方输入框填写目标链ID后点击确认按钮:\n"})
+	objs.Add(ttl2)
+	chain_id_input := widget.NewEntry()
+	objs.Add(chain_id_input)
+	// button
+	//var use_chain_id uint64 = 0
+	title := map[string]string{"en": "Confirm use chain ID", "zh": "确认使用目标链ID"}
+	button := langChangeManager.NewButton(title, func() {
+		id, e := strconv.ParseUint(chain_id_input.Text, 10, 64)
+		if e != nil && id > 0 {
+			actions.SetCheckChainID = id
+		} else {
+			actions.SetCheckChainID = 0
+		}
+	})
+	objs.Add(button)
+
 }

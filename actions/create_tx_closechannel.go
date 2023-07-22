@@ -100,6 +100,9 @@ func AddCanvasObjectCreateTxCloseChannel(title map[string]string, box *fyne.Cont
 			Fee:         *fee_amt,
 		}
 
+		// for fork or test chain ID
+		MaybeForTransactionAddCheckChainID(&newTrs)
+
 		// action
 		opcAct := actions.Action_3_ClosePaymentChannel{
 			ChannelId: channelId,
