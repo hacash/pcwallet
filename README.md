@@ -1,2 +1,2 @@
 # pcwallet
-offline wallet on pc
+offline UI wallet on pc 
