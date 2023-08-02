@@ -9,6 +9,9 @@ import (
 var SetCheckChainID uint64 = 0
 
 func MaybeForTransactionAddCheckChainID(trs *transactions.Transaction_2_Simple) {
+	if SetCheckChainID <= 0 {
+		return // do nothing
+	}
 	//fmt.Println("MaybeForTransactionAddCheckChainID: ", SetCheckChainID)
 	trs.AddAction(&actions.Action_30_SupportDistinguishForkChainID{
 		CheckChainID: fields.VarUint8(SetCheckChainID),
