@@ -289,6 +289,11 @@ func renderTxActionDescribe(mainaddr string, act interfaces.Action) (string, str
 			"仲裁锁定期限到达，按既有主张分配余额并关闭通道 <%s>",
 			a.ChannelId.ToHex())
 
+	} else if a, ok := act.(*actions.Action_30_SupportDistinguishForkChainID); ok {
+		/**************** Action_30_SupportDistinguishForkChainID ***********/
+		fmtEnZh("Set this transaction to only be valid for test chain or fork chain ID = %d",
+			"将此交易设定为仅为测试链或分叉链 ID = %d 有效", uint64(a.CheckChainID))
+
 	} else {
 
 		/************************ Other ************************/
