@@ -135,7 +135,8 @@ func appendChainIDinput(langChangeManager *widgets.LangChangeManager, objs *fyne
 	title := map[string]string{"en": "Confirm use chain ID", "zh": "确认使用目标链ID"}
 	button := langChangeManager.NewButton(title, func() {
 		id, e := strconv.ParseUint(chain_id_input.Text, 10, 64)
-		if e != nil && id > 0 {
+		//fmt.Println("set chain id: ", id)
+		if e == nil && id > 0 {
 			actions.SetCheckChainID = id
 		} else {
 			actions.SetCheckChainID = 0

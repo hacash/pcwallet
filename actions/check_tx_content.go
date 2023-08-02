@@ -140,14 +140,14 @@ func renderTxActionDescribe(mainaddr string, act interfaces.Action) (string, str
 		/**************** Action_1_SimpleToTransfer ****************/
 		toaddr := a.ToAddress.ToReadable()
 		amt := a.Amount.ToFinString()
-		fmtEnZh("Simple transfer: Account <%s> transfers amount <%s> to account <%s>",
+		fmtEnZh("Simple transfer: Account <%s> transfers to account <%s> for amount <%s>",
 			"普通 HAC 转账： 地址 <%s> 向地址 <%s> 转账 <%s>",
 			mainaddr, toaddr, amt)
 	} else if a, ok := act.(*actions.Action_13_FromTransfer); ok {
 		/**************** Action_13_FromTransfer ****************/
 		fromaddr := a.FromAddress.ToReadable()
 		amt := a.Amount.ToFinString()
-		fmtEnZh("HAC From transfer: Account <%s> transfers amount <%s> to account <%s>",
+		fmtEnZh("HAC From transfer: Account <%s> transfers to account <%s> for amount <%s>",
 			"HAC From 转账： 地址 <%s> 向地址 <%s> 转账 <%s>",
 			fromaddr, mainaddr, amt)
 	} else if a, ok := act.(*actions.Action_14_FromToTransfer); ok {
@@ -155,7 +155,7 @@ func renderTxActionDescribe(mainaddr string, act interfaces.Action) (string, str
 		fromaddr := a.FromAddress.ToReadable()
 		toaddr := a.ToAddress.ToReadable()
 		amt := a.Amount.ToFinString()
-		fmtEnZh("HAC From -> To transfer: Account <%s> transfers amount <%s> to account <%s>",
+		fmtEnZh("HAC From -> To transfer: Account <%s> transfers to account <%s> for amount <%s>",
 			"HAC From -> To 转账： 地址 <%s> 向地址 <%s> 转账 <%s>",
 			fromaddr, toaddr, amt)
 	} else if a, ok := act.(*actions.Action_2_OpenPaymentChannel); ok {
