@@ -418,14 +418,10 @@ func renderChannelPaymentBill(txbodystr string) map[string]string {
 		paydrct := "left to right"
 		payamt := prbd.PayAmount.ToFinString()
 		pd := uint8(prbd.PayDirection)
-		if pd == channel.ChannelTransferDirectionHacashRightToLeft ||
-			pd == channel.ChannelTransferDirectionSatoshiRightToLeft {
+		if pd == channel.ChannelTransferDirectionRightToLeft {
 			paydrct = "right to left"
 		}
 
-		if pd >= channel.ChannelTransferDirectionSatoshiLeftToRight {
-			payamt = fmt.Sprintf("SAT %d", prbd.PaySatoshi.GetRealSatoshi())
-		}
 		adinfo := fmt.Sprintf("\nLast pay: %s %s\n"+
 			"\nChannel count: %d\n"+
 			"Sign address count: %d\n"+
