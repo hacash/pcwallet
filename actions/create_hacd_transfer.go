@@ -108,6 +108,7 @@ func AddCanvasObjectCreateTransferHACD(title map[string]string, box *fyne.Contai
 		MaybeForTransactionAddCheckChainID(tx)
 
 		tx.FillTargetSign(payacc)
+		tx.FillTargetSign(feeacc)
 
 		// 创建成功
 		txbody, e3 := tx.Serialize()

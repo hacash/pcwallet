@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	fyne "fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
@@ -133,11 +134,15 @@ func appendChainIDinput(langChangeManager *widgets.LangChangeManager, objs *fyne
 	// button
 	//var use_chain_id uint64 = 0
 	title := map[string]string{"en": "Confirm use chain ID", "zh": "确认使用目标链ID"}
-	button := langChangeManager.NewButton(title, func() {
+	var button *widget.Button = nil
+	button = langChangeManager.NewButton(title, func() {
 		id, e := strconv.ParseUint(chain_id_input.Text, 10, 64)
 		//fmt.Println("set chain id: ", id)
 		if e == nil && id > 0 {
 			actions.SetCheckChainID = id
+			chain_id_input.Hide()
+			button.Hide()
+			ttl2.SetText(fmt.Sprintf("\nSet Test or Fork Chain ID = %d Successfully!", id))
 		} else {
 			actions.SetCheckChainID = 0
 		}

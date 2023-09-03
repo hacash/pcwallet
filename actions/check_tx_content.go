@@ -214,8 +214,8 @@ func renderTxActionDescribe(mainaddr string, act interfaces.Action) (string, str
 	} else if a, ok := act.(*actions.Action_8_SimpleSatoshiTransfer); ok {
 
 		/**************** Action_8_SimpleSatoshiTransfer ***********/
-		fmtEnZh("Satoshi simple transfer: Account <%s> transfers amount <%s> SAT to account <%s>",
-			"比特币普通转账： 地址 <%s> 向地址 <%s> 转账 <%s> SAT", mainaddr, a.ToAddress.ToReadable(), uint64(a.Amount))
+		fmtEnZh("Satoshi simple transfer: Account <%s> transfers to account <%s> with amount <%d> SAT",
+			"比特币普通转账： 地址 <%s> 向地址 <%s> 转账 <%d> SAT", mainaddr, a.ToAddress.ToReadable(), uint64(a.Amount))
 
 	} else if a, ok := act.(*actions.Action_9_LockblsCreate); ok {
 
