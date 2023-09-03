@@ -241,15 +241,15 @@ func renderTxActionDescribe(mainaddr string, act interfaces.Action) (string, str
 	} else if a, ok := act.(*actions.Action_11_FromToSatoshiTransfer); ok {
 
 		/**************** Action_11_FromToSatoshiTransfer ***********/
-		fmtEnZh("Satoshi transfer: Account <%s> transfers amount <%s> SAT to account <%s>",
-			"比特币普通转账： 地址 <%s> 向地址 <%s> 转账 <%s> SAT",
+		fmtEnZh("Satoshi transfer: Account <%s> transfers to account <%s> with amount <%d> SAT ",
+			"比特币普通转账： 地址 <%s> 向地址 <%s> 转账 <%d> SAT",
 			a.FromAddress.ToReadable(), a.ToAddress.ToReadable(), uint64(a.Amount))
 
 	} else if a, ok := act.(*actions.Action_28_FromSatoshiTransfer); ok {
 
-		/**************** Action_11_FromToSatoshiTransfer ***********/
-		fmtEnZh("Satoshi transfer: Account <%s> transfers amount <%s> SAT to account <%s>",
-			"比特币转账： 地址 <%s> 向地址 <%s> 转账 <%s> SAT",
+		/**************** Action_28_FromSatoshiTransfer ***********/
+		fmtEnZh("Satoshi transfer: Account <%s> transfers to account <%s> with amount <%d> SAT ",
+			"比特币转账： 地址 <%s> 向地址 <%s> 转账 <%d> SAT",
 			a.FromAddress.ToReadable(), mainaddr, uint64(a.Amount))
 
 	} else if a, ok := act.(*actions.Action_22_UnilateralClosePaymentChannelByNothing); ok {
