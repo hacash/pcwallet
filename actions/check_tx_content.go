@@ -185,14 +185,16 @@ func renderTxActionDescribe(mainaddr string, act interfaces.Action) (string, str
 	} else if a, ok := act.(*actions.Action_4_DiamondCreate); ok {
 
 		/**************** Action_4_DiamondCreate *******************/
-		fmtEnZh("Mint block diamond: name <%s>, number <%d>, miner account <%s>", "铸造区块钻石： 字面值 <%s>, 序号 <%d>, 矿工账户 <%s>", string(a.Diamond), a.Number, a.Address.ToReadable())
+		fmtEnZh("Mint block diamond: name <%s>, number <%d>, miner account <%s>",
+			"铸造区块钻石： 字面值 <%s>, 序号 <%d>, 矿工账户 <%s>", string(a.Diamond),
+			a.Number, a.Address.ToReadable())
 
 	} else if a, ok := act.(*actions.Action_5_DiamondTransfer); ok {
 
 		/**************** Action_5_DiamondTransfer *****************/
 		fmtEnZh("Transfer diamond: name <%s>, collection account <%s>",
 			"区块钻石转账： 字面值 <%s>, 收取账户 <%s>",
-			a.ToAddress.ToReadable(), string(a.Diamond))
+			string(a.Diamond), a.ToAddress.ToReadable())
 
 	} else if a, ok := act.(*actions.Action_6_OutfeeQuantityDiamondTransfer); ok {
 
@@ -201,7 +203,7 @@ func renderTxActionDescribe(mainaddr string, act interfaces.Action) (string, str
 		toaddr := a.ToAddress.ToReadable()
 		dianames := a.GetDiamondNamesSplitByComma() // 名称列表
 		fmtEnZh("Batch transfer diamonds: account <%s> transfer %d diamonds to account <%s> names is <%s>",
-			"区块钻石批量转账： 账户 <%s> 向账户 <%s> 转移字面值为 <%s> 的 %d 枚钻石",
+			"区块钻石批量转账： 账户 <%s> 转移 %d 枚钻石给账户 <%s>，字面值为 <%s> ",
 			fromaddr, toaddr, dianames, a.DiamondList.Count)
 
 	} else if a, ok := act.(*actions.Action_7_SatoshiGenesis); ok {
