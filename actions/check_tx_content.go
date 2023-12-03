@@ -204,7 +204,7 @@ func renderTxActionDescribe(mainaddr string, act interfaces.Action) (string, str
 		dianames := a.GetDiamondNamesSplitByComma() // 名称列表
 		fmtEnZh("Batch transfer diamonds: account <%s> transfer %d diamonds to account <%s> names is <%s>",
 			"区块钻石批量转账： 账户 <%s> 转移 %d 枚钻石给账户 <%s>，字面值为 <%s> ",
-			fromaddr, toaddr, dianames, a.DiamondList.Count)
+			fromaddr, a.DiamondList.Count, toaddr, dianames)
 
 	} else if a, ok := act.(*actions.Action_7_SatoshiGenesis); ok {
 
