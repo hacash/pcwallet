@@ -17,7 +17,7 @@ import (
 // curl http://192.168.2.108:3381/operatehex -X POST -d '00000001.....'
 
 func AddOpenButtonOnMainOfCreateTransferHACswapHACD(box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
-	title := map[string]string{"en": "Create HAC ⇄ HACD swap transfer tx", "zh": "创建 HAC 与 HACD 互换转账交易"}
+	title := map[string]string{"en": "Create HAC <=> HACD swap transfer tx", "zh": "创建 HAC 与 HACD 互换转账交易"}
 
 	button := langChangeManager.NewButton(title, func() {
 		OpenWindowCreateTransferHACswapHACD(title, langChangeManager)

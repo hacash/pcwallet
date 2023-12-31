@@ -98,6 +98,8 @@ func main() {
 	// 创建开启、关闭通道交易
 	actions.AddOpenButtonOnMainOfCreateTxOpenChannel(objs, langChangeManager)
 	actions.AddOpenButtonOnMainOfCreateTxCloseChannel(objs, langChangeManager)
+	// 创建&清除 HACD 铭文
+	actions.AddOpenButtonOnMainOfCreateHACDinscription(objs, langChangeManager)
 	// 签署交易
 	actions.AddOpenButtonOnMainOfSignTx(objs, langChangeManager)
 	// 检查一笔交易的结构和内容
