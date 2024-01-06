@@ -39,12 +39,12 @@ func OpenWindowCreateInscriptionHACD(title map[string]string, langChangeManager 
 func AddCanvasObjectCreateInscriptionHACD(title map[string]string, box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
 	page := container.NewVBox()
 
-	page.Add(langChangeManager.NewTextWrapWordLabel(map[string]string{"en": "Creates a multiple HACD transaction. Note: the transaction fee will be use HAC deducted additionally; it is suggested that the transaction fee should not be less than 0.002 pieces; the transaction timestamp is optional, the current time will be used by default.", "zh": "创建一笔 HACD 批量转账交易。注意：交易手续费将额外扣除HAC；交易手续费建议不低于 0.002 枚；交易时间戳为选填，不填则默认取用当前时间。"}))
+	page.Add(langChangeManager.NewTextWrapWordLabel(map[string]string{"en": "Creates a multiple HACD inscription(or clean) transaction. Note: the transaction fee will be use HAC deducted additionally; it is suggested that the transaction fee should not be less than 0.002 pieces; the transaction timestamp is optional, the current time will be used by default.", "zh": "创建一笔 HACD 批量铭刻/清除铭刻交易。注意：交易手续费将额外扣除HAC；交易手续费建议不低于 0.002 枚；交易时间戳为选填，不填则默认取用当前时间。"}))
 
 	input1 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "HACD name list split by comma", "zh": "输入逗号隔开的钻石字面值列表"})
 	input1.Wrapping = fyne.TextWrapWord
 	input1.MultiLine = true
-	input2 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Inscription content (String or Hash， )", "zh": "铭刻内容：字符串或Hash（清除时不填）"})
+	input2 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Inscription content (String or Hash)", "zh": "铭刻内容：字符串或Hash（清除时不填）"})
 	input3 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "HACD owner & Tx Fee PrivateKey or Password", "zh": "输入钻石所属私钥或密码"})
 	input4 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Tx Fee - HAC (unit: 248) or use 'ㄜ1:248' format, Example: '0.25' or 'ㄜ25:246'", "zh": "输入交易手续费 - HAC（单位：枚 - :248）也可直接使用 'ㄜ1:248' 格式， 例如：'0.25' or 'ㄜ25:246'"})
 	input5 := langChangeManager.NewEntrySetPlaceHolder(map[string]string{"en": "Optional: Inscription Protocol Fee (Burning)", "zh": "选填：铭刻协议费用（销毁）"})
