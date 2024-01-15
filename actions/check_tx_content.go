@@ -296,6 +296,19 @@ func renderTxActionDescribe(mainaddr string, act interfaces.Action) (string, str
 		fmtEnZh("Set this transaction to only be valid for test chain or fork chain ID = %d",
 			"将此交易设定为仅为测试链或分叉链 ID = %d 有效", uint64(a.CheckChainID))
 
+	} else if a, ok := act.(*actions.Action_32_DiamondsEngraved); ok {
+		/**************** Action_32_DiamondsEngraved ***********/
+		fmtEnZh("write inscription: %s, HACD List: %s, burn protocol fee: %s",
+			"铭刻铭文: %s , HACD 列表: %s  销毁协议费用: %s",
+			a.EngravedContent.ShowString(),
+			a.DiamondList.SerializeHACDlistToCommaSplitString(), a.TotalCost.ToFinString())
+
+	} else if a, ok := act.(*actions.Action_33_DiamondsEngravedRecovery); ok {
+		/**************** Action_33_DiamondsEngravedRecovery ***********/
+		fmtEnZh("clean inscription for HACD List: %s, ",
+			"擦除铭文，HACD 列表: %s ",
+			a.DiamondList.SerializeHACDlistToCommaSplitString())
+
 	} else {
 
 		/************************ Other ************************/
