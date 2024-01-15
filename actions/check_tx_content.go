@@ -301,7 +301,7 @@ func renderTxActionDescribe(mainaddr string, act interfaces.Action) (string, str
 		fmtEnZh("write inscription: %s, HACD List: %s, burn protocol fee: %s",
 			"铭刻铭文: %s , HACD 列表: %s  销毁协议费用: %s",
 			a.EngravedContent.ShowString(),
-			a.DiamondList.SerializeHACDlistToCommaSplitString(), a.TotalCost.ToFinString())
+			a.DiamondList.SerializeHACDlistToCommaSplitString(), a.ProtocolCost.ToFinString())
 
 	} else if a, ok := act.(*actions.Action_33_DiamondsEngravedRecovery); ok {
 		/**************** Action_33_DiamondsEngravedRecovery ***********/
