@@ -4,6 +4,7 @@ import (
 	"encoding/hex"
 	fyne "fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/widget"
 	"github.com/hacash/core/account"
 	"github.com/hacash/pcwallet/widgets"
@@ -19,6 +20,8 @@ func AddOpenButtonOnMainOfCreateAccount(box *fyne.Container, langChangeManager *
 	box.Add(button)
 }
 
+var createAccountWindow fyne.Window
+
 func OpenWindowCreateAccount(title map[string]string, langChangeManager *widgets.LangChangeManager) fyne.Window {
 	// 打开窗口测试
 	testSize := fyne.Size{
@@ -30,7 +33,8 @@ func OpenWindowCreateAccount(title map[string]string, langChangeManager *widgets
 	AddCanvasObjectCreateAccount(title, box, langChangeManager)
 
 	// 开启窗口
-	return langChangeManager.NewWindowAndShow(title, &testSize, box)
+	createAccountWindow = langChangeManager.NewWindowAndShow(title, &testSize, box)
+	return createAccountWindow
 }
 
 func AddCanvasObjectCreateAccount(title map[string]string, box *fyne.Container, langChangeManager *widgets.LangChangeManager) {
@@ -68,13 +72,39 @@ func AddCanvasObjectCreateAccount(title map[string]string, box *fyne.Container, 
 
 	})
 
+	var eabpswd *widget.Check
+	var pswdcnf *dialog.ConfirmDialog
+	var create_pswdcnf = func() *dialog.ConfirmDialog {
+		if pswdcnf == nil {
+			pswdcnf = dialog.NewConfirm("Security Warning", "Creating by password will make \naccount security issues \n(your assets may be stolen), \nare you sure you are aware of the risks?", func(ok bool) {
+				if ok {
+					input.Show()
+					button1.Show()
+					eabpswd.Hide()
+				} else {
+					eabpswd.SetChecked(false)
+					//pswdcnf.Hide()
+				}
+			}, createAccountWindow)
+		}
+		return pswdcnf
+	}
+	eabpswd = langChangeManager.NewCheck(map[string]string{"en": "Enable password creation", "zh": "启用密码创建模式"}, func(ok bool) {
+		pswdcnf = create_pswdcnf()
+		pswdcnf.Show()
+	})
+
 	page.Add(input)
 	page.Add(button1)
+	input.Hide()
+	button1.Hide()
+	//fmt.Println(input.Text, button1.Text)
 	page.Add(button2)
 	page.Add(accshow)
 
 	card := langChangeManager.NewCardSetTitle(title, page)
 	box.Add(card)
+	page.Add(eabpswd)
 }
 
 func showAccount(langChangeManager *widgets.LangChangeManager, text *widget.Entry, acc *account.Account) {

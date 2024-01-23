@@ -88,6 +88,16 @@ func (l *LangChangeManager) NewButton(texts map[string]string, tapped func()) *w
 	return lb
 }
 
+func (l *LangChangeManager) NewCheck(texts map[string]string, tapped func(bool)) *widget.Check {
+	lb := widget.NewCheck(texts[l.currentLangName], tapped)
+
+	// add ary
+	l.objs = append(l.objs, lb)
+	l.langs = append(l.langs, &LangItem{words: texts})
+	// return ok
+	return lb
+}
+
 func (l *LangChangeManager) SetText(objs interface{}, texts map[string]string) {
 	l.setTextEx(objs, texts, false)
 }
