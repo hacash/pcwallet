@@ -206,9 +206,18 @@ func renderTxActionDescribe(mainaddr string, act interfaces.Action) (string, str
 			"区块钻石批量转账： 账户 <%s> 转移 %d 枚钻石给账户 <%s>，字面值为 <%s> ",
 			fromaddr, a.DiamondList.Count, toaddr, dianames)
 
-	} else if a, ok := act.(*actions.Action_7_SatoshiGenesis); ok {
+	} else if a, ok := act.(*actions.Action_7_MultipleDiamondTransfer); ok {
 
-		/**************** Action_7_SatoshiGenesis *****************/
+		/**************** Action_5_DiamondTransfer *****************/
+		toaddr := a.ToAddress.ToReadable()
+		dianames := a.GetDiamondNamesSplitByComma() // 名称列表
+		fmtEnZh("Batch transfer diamonds: account <%s> transfer %d diamonds to account <%s> names is <%s>",
+			"区块钻石批量转账： 账户 <%s> 转移 %d 枚钻石给账户 <%s>，字面值为 <%s> ",
+			mainaddr, a.DiamondList.Count, toaddr, dianames)
+
+	} else if a, ok := act.(*actions.Action_34_SatoshiGenesis); ok {
+
+		/**************** Action_34_SatoshiGenesis *****************/
 		fmtEnZh("Bitcoin genesis move: <%d> bitcoin move by account <%s>",
 			"比特币单向转移： <%d> 枚比特币被账户 <%s> 转移进来",
 			uint32(a.BitcoinQuantity), a.OriginAddress.ToReadable())
